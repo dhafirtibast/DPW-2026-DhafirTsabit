@@ -9,7 +9,8 @@ Jobsheet ini berfokus pada penyusunan arsitektur halaman web **SIMPUS-Mini** men
 ## Struktur File dan Direktori
 
 ```text
-simpus-mini/
+jobsheet-1/
+├── README.md              # Dokumentasi singkat
 ├── index.html             # Dashboard & Ringkasan Statistik
 ├── buku/                  # Modul Entitas Buku
 │   ├── list.html          # Data Grid / Tabel Buku (7 Data)
