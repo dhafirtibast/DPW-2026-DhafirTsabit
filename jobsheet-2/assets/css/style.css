@@ -143,6 +143,10 @@ td button:last-of-type {
     color: #fff;
 }
 
+td button.btn-primary {
+    background-color: #1ad879;
+}
+
 /* Form */
 form p {
     margin-bottom: 1rem;
