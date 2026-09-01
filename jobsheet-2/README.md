@@ -60,7 +60,7 @@ jobsheet-02/
 +     background-color: #fef4fa;
   }
 ```
-* Menambahkan class `.btn-primary` untuk variasi tombol aksi utama dengan latar hijau terang (#1ad879).
+* Menambahkan class `.btn-primary` untuk variasi tambahan tombol detail dengan latar hijau terang (#1ad879).
 ```diff
   td button:first-of-type {
     background-color: #f0ad4e;
