@@ -10,7 +10,7 @@ async function muatDaftarBuku() {
     try {
         await new Promise((resolve) => setTimeout(resolve, 600));
 
-        const res = await fetch("../data/buku.json");
+        const res = await fetch("../data/bukuu.json");
         if (!res.ok) {
             throw new Error("Gagal mengambil data (status " + res.status + ")");
             
@@ -30,7 +30,7 @@ async function muatDaftarBuku() {
                 "</td>";
             tbody.appendChild(tr);
         });
-    } catch (error) {
+    } catch (err) {
         tbody.innerHTML =
         "<tr><td colspan=\"5\">Gagal memuat data: " + err.message + "</td></tr>";
     } finally {
