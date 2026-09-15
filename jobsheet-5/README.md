@@ -1,16 +1,19 @@
-# Jobsheet 4 — UI/UX Design
+# Jobsheet 5 — Interaktivitas JavaScript
 
-Sub-CPMK: Merancang UI/UX aplikasi (proyek).
+Sub-CPMK: Menerapkan interaktivitas JavaScript pada aplikasi (proyek).
 
 ## Struktur Folder
 
 ```
-jobsheet-4/
+jobsheet-5/
 ├── anggota/
 │   ├── list.html
 │   └── tambah.html
-├── assets/css/
-│   └── style.css
+├── assets/
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── app.js
 ├── buku/
 │   ├── list.html
 │   └── tambah.html
@@ -20,27 +23,32 @@ jobsheet-4/
 └── index.html
 ```
 
-## Perubahan dari Jobsheet 3
+## Perubahan dari Jobsheet 4
 
-- Tidak ada perubahan kode — halaman HTML/CSS tetap sama persis dengan Jobsheet 3.
-- Tambah `docs/wireframe.md`: wireframe teks + user flow untuk fitur yang **belum dibangun** (Login, Dashboard Petugas, Peminjaman, Pengembalian, Riwayat).
+- Tambah `assets/js/app.js` — satu file JavaScript yang menangani semua interaktivitas halaman.
+- **Hamburger menu** tidak lagi memakai *checkbox hack* (`input.nav-toggle` + `label`), diganti `button#nav-toggle-btn` yang dikendalikan JS dan membuka menu lewat class `.nav-open`.
+- **Konfirmasi hapus**: tombol hapus diberi class `.btn-hapus`, JS menampilkan `confirm()` lalu menghapus baris tabel jika disetujui.
+- **Filter tabel**: tambah `input#search-input` di halaman Daftar Buku dan Daftar Anggota, JS menyaring baris secara langsung (`keyup`).
+- **Validasi form client-side** pada `#form-tambah` (buku & anggota): field wajib, tahun 1900–2026, dan stok tidak negatif — pesan error tampil di bawah input.
+- CSS ditambah aturan `.error`, `.search-box`, dan penyesuaian `.nav-open`; `<meta viewport>` dipindah ke baris atas `<head>`.
+- `docs/wireframe.md` tetap ada — belum ada halaman baru, fokus jobsheet ini pada interaktivitas halaman yang sudah ada.
 
 ## Cara Menjalankan
 
-Sama seperti Jobsheet 3 — buka `index.html`.
+Sama seperti Jobsheet 4 — buka `index.html` (JavaScript dimuat otomatis oleh setiap halaman).
 
 ## Catatan
 
-Dokumen `docs/wireframe.md` menjadi acuan struktur HTML baru yang mulai diimplementasikan pada Jobsheet 5 dan seterusnya (interaktivitas JS, lalu PHP/PostgreSQL untuk fitur Login & Peminjaman).
+Interaktivitas di `app.js` masih sepenuhnya *client-side* dan hanya bekerja pada data yang tampil di halaman (perubahan hilang saat refresh). Fitur Login, Peminjaman, dan Pengembalian dari `docs/wireframe.md` baru akan berfungsi ketika backend PHP/PostgreSQL ditambahkan pada jobsheet berikutnya.
 
 ## Refleksi
 
-Jobsheet ini terasa berbeda dari jobsheet-jobsheet sebelumnya karena fokusnya bukan pada penulisan kode, melainkan pada tahap **perancangan (design thinking)** sebelum fitur benar-benar dibangun. Beberapa hal yang dipelajari:
+Jobsheet ini adalah langkah pertama menuju aplikasi yang benar-benar interaktif. Halaman statis dari Jobsheet 2–4 mulai diberi "nyawa" lewat JavaScript. Beberapa hal yang dipelajari:
 
-- **Wireframe membantu berpikir sebelum ngoding.** Dengan menuliskan wireframe teks untuk fitur Login, Dashboard, Peminjaman, Pengembalian, dan Riwayat terlebih dahulu, alur data dan kebutuhan tiap halaman jadi lebih jelas sebelum masuk ke implementasi HTML/CSS/JS/PHP.
-- **Memisahkan tahap desain dan tahap coding** ternyata memudahkan revisi — mengubah struktur wireframe jauh lebih murah daripada mengubah kode yang sudah jadi.
-- **UI/UX bukan sekadar tampilan cantik**, tapi juga soal alur pengguna (user flow): bagaimana petugas berpindah dari login → dashboard → melakukan peminjaman/pengembalian → melihat riwayat, dan memastikan alur itu logis dan efisien.
-- Menyimpan dokumentasi desain di folder `docs/` terpisah dari kode membuat proyek lebih rapi dan mudah dijadikan acuan tim (atau diri sendiri) saat implementasi di jobsheet berikutnya.
-- Jobsheet ini menjadi jembatan penting: dari sekadar halaman statis (Jobsheet 2–3) menuju aplikasi dengan interaktivitas nyata (JS di Jobsheet 5, lalu backend PHP/PostgreSQL untuk Login & Peminjaman).
+- **Satu file JS untuk banyak halaman.** Dengan memuat `app.js` di semua halaman dan mengawali setiap fungsi dengan pengecekan elemen (`if (!el) return`), satu skrip bisa dipakai di Beranda, Daftar Buku, Daftar Anggota, maupun form Tambah tanpa error — pola yang jauh lebih rapi daripada menaruh skrip di tiap file.
+- **DOM membuat halaman terasa hidup.** Filter tabel, konfirmasi hapus, dan validasi form membuat pengguna langsung mendapat umpan balik tanpa memuat ulang halaman.
+- **Memperbaiki solusi lama.** Mengganti *checkbox hack* pada hamburger menu dengan tombol yang dikendalikan JS terasa lebih benar secara aksesibilitas (tombol asli + `aria-label`) dan lebih mudah dikembangkan.
+- **Validasi client-side bukan pengaman.** JS hanya membantu pengguna mengisi form; data tetap harus divalidasi ulang di sisi server agar aman — kesadaran yang penting sebelum masuk ke PHP/PostgreSQL.
+- **Interaktivitas perlu desain.** Karena wireframe di `docs/wireframe.md` sudah dibuat di Jobsheet 4, saya tinggal menambahkan perilaku pada struktur yang sudah ada, bukan merombak HTML.
 
-Secara keseluruhan, jobsheet ini mengajarkan pentingnya merancang sebelum membangun — kebiasaan yang akan sangat berguna saat proyek menjadi lebih kompleks di jobsheet-jobsheet selanjutnya.
+Secara keseluruhan, jobsheet ini menunjukkan bahwa HTML/CSS hanyalah tampilan — JavaScript-lah yang membuatnya merespons tindakan pengguna, dan itu menjadi fondasi penting sebelum aplikasi terhubung ke basis data.
