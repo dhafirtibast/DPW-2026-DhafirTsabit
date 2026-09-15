@@ -193,14 +193,13 @@ footer {
 }
 
 /* Hamburger Menu */
-.nav-toggle {
-    display: none;
-}
 
 .nav-toggle-label {
     display: none;
     font-size: 1.6rem;
     color: #fff;
+    background: none;
+    border: none;
     cursor: pointer;
 }
 
@@ -228,7 +227,7 @@ footer {
         margin-top: 1rem;
     }
 
-    .nav-toggle:checked ~ nav {
+    header nav.nav-open {
         display: block;
     }
 
