@@ -61,41 +61,41 @@ function initValidasiForm() {
     form.addEventListener("submit", function (e) {
         let valid = true;
 
-        const judul = form.querySelector("[name='judul'], [name='nama']");
-        if (judul && judul.value.trim() === "") {
-            tampilkanError(judul, "Field ini waib diisi.");
+        const nama = form.querySelector("[name='nama']");
+        if (nama && nama.value.trim() === "") {
+            tampilkanError(nama, "Field ini waib diisi.");
             valid = false;
-        } else if (judul) {
-            hapusError(judul);
+        } else if (nama) {
+            hapusError(nama);
         }
 
-        const pengarang = form.querySelector("[name='pengarang']");
-        if (pengarang && pengarang.value.trim() === "") {
-            tampilkanError(pengarang, "Field ini waib diisi.");
+        const merk = form.querySelector("[name='merk']");
+        if (merk && merk.value.trim() === "") {
+            tampilkanError(merk, "Field ini waib diisi.");
             valid = false;
-        } else if (pengarang) {
-            hapusError(pengarang);
+        } else if (merk) {
+            hapusError(merk);
         }
 
         const tahun = form.querySelector("[name='tahun']");
         if (tahun) {
             const nilai = parseInt(tahun.value, 10);
-            if (isNaN(nilai) || nilai < 1900 || nilai > 2026) {
-                tampilkanError(tahun, "Tahun harus di antara 1900-2026.");
+            if (isNaN(nilai) || nilai < 1990 || nilai > 2026) {
+                tampilkanError(tahun, "Tahun harus di antara 1990-2026.");
                 valid = false;
             } else {
                 hapusError(tahun);
             }
         }
 
-        const stok = form.querySelector("[name='stok']");
-        if (stok) {
-            const nilai = parseInt(stok.value, 10);
+        const harga = form.querySelector("[name='harga']");
+        if (harga) {
+            const nilai = parseInt(harga.value, 10);
             if (isNaN(nilai) || nilai < 0) {
-                tampilkanError(stok, "Stok tidak boleh negatif.");
+                tampilkanError(harga, "Harga tidak boleh negatif.");
                 valid = false;
             } else {
-                hapusError(stok);
+                hapusError(harga);
             }
         }
 
