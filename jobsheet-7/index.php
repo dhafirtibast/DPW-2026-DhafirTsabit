@@ -1,27 +1,10 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SIMPUS-Mini | Beranda</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-    <header>
-        <h1>SIMPUS-Mini</h1>   
-        <button type="button" id="nav-toggle-btn" class="nav-toggle-label" aria-label="Menu">&#9776;</button>
-        <nav>
-            <ul>
-                <li><a href="index.html">Beranda</a></li>
-                <li><a href="buku/list.html">Daftar Buku</a></li>
-                <li><a href="buku/tambah.html">Tambah Buku</a></li>
-                <li><a href="anggota/list.html">Daftar Anggota</a></li>
-                <li><a href="anggota/tambah.html">Tambah Anggota</a></li>
-            </ul>
-        </nav>
-    </header>
+<?php
+$page_title = "Beranda";
+include __DIR__ . '/includes/header.php';
 
-    <main>
+$totalBuku = count($_SESSION['buku'] ?? []);
+$totalAnggota = count($_SESSION['anggota'] ?? []);
+?>
         <section>
             <h2>Selamat Datang di Sistem Perpustakaan Mini</h2>
             <p>Aplikasi sederhana untuk mengelola data buku dan anggota perpustakaan.</p>
@@ -32,28 +15,16 @@
             <div>
             <article>
                 <h3>Total Buku</h3>
-                <p>12</p>
+                <p><?php echo $totalBuku; ?></p>
             </article>
             <article>
                 <h3>Total Anggota</h3>
-                <p>8</p>
+                <p><?php echo $totalAnggota; ?></p>
             </article>
             <article>
                 <h3>Sedang Dipinjam</h3>
-                <p>3</p>
-            </article>
-            <article>
-                <h3>Buku Terlambat</h3>
-                <p>6</p>
+                <p>0</p>
             </article>
             </div>
         </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 SIMPUS-Mini &mdash; Jobsheet 1
-        </p>
-    </footer>
-    <script src="assets/js/app.js"></script>
-</body>
-</html>
+<?php include __DIR__ . 'includes/footer.php'; ?>

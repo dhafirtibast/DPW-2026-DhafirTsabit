@@ -1,34 +1,23 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>SIMPUS-Mini | Daftar Buku</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-    <header>
-        <h1>SIMPUS-Mini</h1>
-        <button type="button" id="nav-toggle-btn" class="nav-toggle-label" aria-label="Menu">&#9776;</button>
-        <nav>
-            <ul>
-                <li><a href="../index.html">Beranda</a></li>
-                <li><a href="list.html">Daftar Buku</a></li>
-                <li><a href="tambah.html">Tambah Buku</a></li>
-                <li><a href="../anggota/list.html">Daftar Anggota</a></li>
-                <li><a href="../anggota/tambah.html">Tambah Anggota</a></li>
-            </ul>
-        </nav>
-    </header>
+<?php
+$page_title = "Daftar Buku";
+include __DIR__ . '/../includes/header.php';
 
-    <main>
+$flash = $_SESSION['flash'] ?? null;
+unset($_SESSION['flash']);
+$daftarBuku = $_SESSION['buku'] ?? [];
+?>
         <section>
             <h2>Daftar Buku</h2>
+
+            <?php if ($flash): ?>
+                <p class="flash flash-<?php echo $flash['type']; ?>"><?php echo $flash['pesan']; ?></p>
+            <?php endif; ?>
+
             <div class="search-box">
                 <label for="search-input">Cari Judul Buku</label>
                 <input type="text" id="search-input" placeholder="Ketik judul buku...">
             </div>
-            <p id="loading-indicator" style="display:none;">Memuat data...</p>
+            
             <div class="table-responsive">
             <table>
                 <thead>
@@ -41,17 +30,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!--Baris diisi dinamis oleh assets/js/buku.js via fetch('../data/buku.json')-->
+                    <?php if (empty($daftarBuku)): ?>
+                    <tr>
+                        <td colspan="5">Belum ada data buku. Silakan tambah lewat menu "Tambah Buku".</td>
+                    </tr>
+                    <?php else: ?>
+                        <?php foreach ($daftarBuku as $buku): ?>
+                            <tr>
+                                <td><?php echo $buku['judul']; ?></td>
+                                <td><?php echo $buku['pengarang']; ?></td>
+                                <td><?php echo $buku['tahun']; ?></td>
+                                <td><?php echo $buku['stok']; ?></td>
+                                <td>
+                                    <button type="button">Edit</button>
+                                    <button type="button" class="btn-hapus">Hapus</button>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                 </tbody>
             </table>
             </div>
         </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 SIMPUS-Mini &mdash; Jobsheet 6</p>
-    </footer>
-    <script src="../assets/js/app.js"></script>
-    <script src="../assets/js/buku.js"></script>
-</body>
-</html>
+<?php include __DIR__ . '/../includes/footer.php'; ?>
