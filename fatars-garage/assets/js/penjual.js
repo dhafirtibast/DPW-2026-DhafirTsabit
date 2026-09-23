@@ -1,5 +1,4 @@
-// Mengambil & menampilkan Daftar Anggota secara asinkron dari data/anggota.json
-async function muatDaftarAnggota() {
+async function muatDaftarPenjual() {
     const tbody = document.querySelector(".table-responsive table tbody");
     const loading = document.getElementById("loading-indicator");
     if (!tbody) return;
@@ -10,19 +9,20 @@ async function muatDaftarAnggota() {
     try {
         await new Promise((resolve) => setTimeout(resolve, 600));
 
-        const res = await fetch("../data/anggota.json");
+        const res = await fetch("../data/penjual.json");
         if (!res.ok) {
             throw new Error("Gagal mengambil data (status " + res.status + ")");
         }
-        const daftarAnggota = await res.json();
+        const daftarPenjual = await res.json();
 
-        daftarAnggota.forEach(function (anggota) {
+        daftarPenjual.forEach(function (penjual) {
             const tr = document.createElement("tr");
             tr.innerHTML =
-                "<td>" + anggota.no_anggota + "</td>" +
-                "<td>" + anggota.nama + "</td>" +
-                "<td>" + anggota.alamat + "</td>" +
-                "<td>" + anggota.no_hp + "</td>" +
+                "<td>" + penjual.id + "</td>" +
+                "<td>" + penjual.nama + "</td>" +
+                "<td>" + penjual.kota + "</td>" +
+                "<td>" + penjual.no_hp + "</td>" +
+                "<td>" + penjual.email + "</td>" +
                 "<td>" +
                 "<button type=\"button\">Edit</button> " +
                 "<button type=\"button\" class=\"btn-hapus\">Hapus</button>" +
@@ -31,10 +31,10 @@ async function muatDaftarAnggota() {
         });
     } catch (err) {
         tbody.innerHTML =
-            "<tr><td colspan=\"5\">Gagal memuat data: " + err.message + "</td></tr>";
+            "<tr><td colspan=\"6\">Gagal memuat data: " + err.message + "</td></tr>";
     } finally {
         loading.style.display = "none";
     }
 }
 
-document.addEventListener("DOMContentLoaded", muatDaftarAnggota);
+document.addEventListener("DOMContentLoaded", muatDaftarPenjual);
