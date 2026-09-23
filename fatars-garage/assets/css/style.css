@@ -1,3 +1,19 @@
+/* Font: Bebas Neue (heading) + Public Sans (body) */
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Public+Sans:wght@400;500;600;700&display=swap");
+
+:root {
+    --bg: #1A1D20;
+    --surface: #2C3034;
+    --surface-2: #34383D;
+    --accent: #D97706;
+    --accent-dark: #B45309;
+    --text: #F4F4F5;
+    --muted: #A1A1AA;
+    --border: #3A3F44;
+    --danger: #d9534f;
+    --radius: 8px;
+}
+
 /* Reset & Base */
 * {
     box-sizing: border-box;
@@ -6,14 +22,14 @@
 }
 
 body {
-    font-family: "Segoe UI", Arial, sans-serif;
-    color: #2b2b2b;
-    background-color: #11340be8;
+    font-family: "Public Sans", "Open Sans", "Segoe UI", Arial, sans-serif;
+    color: var(--text);
+    background-color: var(--bg);
     line-height: 1.5;
 }
 
 a {
-    color: #197706;
+    color: var(--accent);
     text-decoration: none;
 }
 
@@ -23,8 +39,8 @@ a:hover {
 
 /* Header & Navbar */
 header {
-    background-color: #197706;
-    color: #fff;
+    background-color: var(--surface);
+    color: var(--text);
     padding: 1rem 1.5rem;
     display: flex;
     align-items: center;
@@ -34,6 +50,7 @@ header {
 
 header h1 {
     font-size: 1.4rem;
+    color: var(--accent);
 }
 
 header nav ul {
@@ -43,8 +60,13 @@ header nav ul {
 }
 
 header nav a {
-    color: #fff;
+    color: var(--text);
     font-weight: 500;
+}
+
+header nav a:hover {
+    color: var(--accent);
+    text-decoration: none;
 }
 
 /* Main Layout */
@@ -56,16 +78,89 @@ main {
 }
 
 section {
-    background-color: #fff;
+    background-color: var(--surface);
     border-radius: 8px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
 section h2 {
     margin-bottom: 1rem;
-    color: #197706;
+    color: var(--text);
+    font-size: 1.5rem;
+}
+
+/* Hero (Beranda) */
+
+.hero {
+    background: 
+    linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(44, 48, 52, 0.9)),
+    var(--surface);
+}
+
+.hero p {
+    color: var(--muted);
+    margin-bottom: 1rem;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.chip:hover {
+    background-color: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    text-decoration: none;
+}
+
+/* Grid Kartu Iklan */
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.card {
+    background-color: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.card .thumb {
+    height: 120px;
+    background: linear-gradient(135deg, #3A3F44, #1A1D20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.card .body {
+    padding: 0.85rem;
+}
+
+.card .body h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+}
+
+.card .body .meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.card .body .harga{
+    color: var(--accent);
+    font-weight: 700;
+    margin-top: 0.35rem;
 }
 
 /* CSS Grid */
@@ -77,22 +172,23 @@ main section:nth-of-type(2) div{
 }
 
 main section:nth-of-type(2) article {
-    background-color: #fef4fa;
-    border-radius: 8px;
+    background-color: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
     padding: 1.25rem;
     text-align: center;
 }
 
 main section:nth-of-type(2) article h3 {
-    font-size: 0.95rem;
-    color: #55677a;
+    font-size: 1rem;
+    color: var(--muted);
     margin-bottom: 0.5rem;
 }
 
 main section:nth-of-type(2) article p {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #197706;
+    color: var(--accent);
 }
 
 /* Tabel */
@@ -105,20 +201,31 @@ table {
 th, td {
     text-align: left;
     padding: 0.65rem, 0.75rem;
-    border-bottom: 1px solid #e2e6ea;
+    border-bottom: 1px solid var(--border);
+}
+
+th {
+    color: var(--muted);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
 }
 
 thead {
-    background-color: #197706;
-    color: #fff;
+    background-color: var(--surface-2);
 }
 
 tbody tr:nth-child(even) {
-    background-color: #f7f9fb;
+    background-color: rgba(255, 255, 255, 0.02);
 }
 
 tbody tr:hover {
-    background-color: #fef4fa;
+    background-color: rgba(217, 119, 6, 0.08);
+}
+
+.harga {
+    color: var(--accent);
+    font-weight: 700;
 }
 
 td button {
@@ -128,20 +235,23 @@ td button {
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.85rem;
+    font-family: inherit;
 }
 
 td button:first-of-type {
-    background-color: #f0ad4e;
-    color: #fff;
+    background-color: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
 }
 
 td button:last-of-type {
-    background-color: #d9534f;
+    background-color: var(--danger);
     color: #fff;
 }
 
 td button.btn-primary {
-    background-color: #1ad879;
+    background-color: var(--accent);
+    color: #fff;
 }
 
 /* Form */
@@ -153,37 +263,46 @@ form label {
     display: block;
     margin-bottom: 0.35rem;
     font-weight: 600;
-    color: #444;
+    color: var(--text);
 }
 
-form input, form select {
+form input, form select, form textarea {
     width: 100%;
     max-width: 400px;
     padding: 0.55rem 0.7rem;
-    border: 1px solid #cdd4da;
+    border: 1px solid var(--border);
     border-radius: 4px;
     font-size: 1rem;
+    font-family: inherit;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+form input:focus, form select:focus, form textarea:focus {
+    outline: none;
+    border-color: var(--accent);
 }
 
 form button[type="submit"] {
-    background-color: #197706;
+    background-color: var(--accent);
     color: #fff;
     border: none;
     padding: 0.6rem 1.5rem;
     border-radius: 4px;
     font-size: 1rem;
+    font-family: inherit;
     cursor: pointer;
 }
 
 form button[type="submit"]:hover {
-    background-color: #164869;
+    background-color: var(--accent-dark);
 }
 
 /* Footer */
 footer {
     text-align: center;
     padding: 1.25rem;
-    color: #7a8794;
+    color: var(--muted);
     font-size: 0.9rem;
 }
 
@@ -196,7 +315,7 @@ footer {
 .nav-toggle-label {
     display: none;
     font-size: 1.6rem;
-    color: #fff;
+    color: var(--text);
     background: none;
     border: none;
     cursor: pointer;
@@ -205,7 +324,7 @@ footer {
 /* Pesan Error Validasi */
 .error {
     display: block;
-    color: #d9534f;
+    color: var(--danger);
     font-size: 0.85rem;
     margin-top: 0.25rem;
 }
@@ -215,17 +334,36 @@ footer {
     margin-bottom: 1rem;
 }
 
+.search-box label {
+    display: block;
+    margin-bottom: 0.35;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
 .search-box input {
     width: 100%;
     max-width: 320px;
     padding: 0.5rem 0.75rem;
-    border: 1px solid #cdd4da;
+    border: 1px solid var(--border);
     border-radius: 4px;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--accent);
 }
 
 /* Tablet Vertikal */
 @media (max-width: 768px) {
-    main-section:nth-of-type(2) {
+    main-section:nth-of-type(2) div {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
@@ -255,12 +393,13 @@ footer {
         gap: 0.75rem;
     }
     
-    main section:nth-of-type(2) div {
+    main section:nth-of-type(2) div, .card-grid {
         grid-template-columns: 1fr;
     }
 
     form input,
-    form select {
+    form select,
+    form textarea {
         max-width: 100%;
     }
 }
