@@ -3,46 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SIMPUS-Mini | Daftar Anggota</title>
+    <title>Fatar's Garage | Daftar Penjual</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <header>
-        <h1>SIMPUS-Mini</h1>
+        <h1>Fatar's Garage</h1>
         <button type="button" id="nav-toggle-btn" class="nav-toggle-label" aria-label="Menu">&#9776;</button>
         <nav>
             <ul>
                 <li><a href="../index.html">Beranda</a></li>
-                <li><a href="../buku/list.html">Daftar Buku</a></li>
-                <li><a href="../buku/tambah.html">Tambah Buku</a></li>
-                <li><a href="list.html">Daftar Anggota</a></li>
-                <li><a href="tambah.html">Tambah Anggota</a></li>
+                <li><a href="../motor/list.html">Daftar Motor</a></li>
+                <li><a href="../motor/tambah.html">Pasang Iklan</a></li>
+                <li><a href="list.html">Daftar Penjual</a></li>
+                <li><a href="tambah.html">Tambah Penjual</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
         <section>
-            <h2>Daftar Anggota</h2>
+            <h2>Daftar Penjual</h2>
             <div class="search-box">
-                <label for="search-input">Cari Nama Anggota</label>
-                <input type="text" id="search-input" placeholder="Ketik nama anggota...">
+                <label for="search-input">Cari Nama Penjual</label>
+                <input type="text" id="search-input" placeholder="Ketik nama penjual...">
             </div>
             <p id="loading-indicator" style="display:none;">Memuat data...</p>
             <div class="table-responsive">
             <table>
                 <thead>
                     <tr>
-                        <th>No. Anggota</th>
+                        <th>ID</th>
                         <th>Nama</th>
-                        <th>Alamat</th>
+                        <th>Kota</th>
                         <th>No. HP</th>
                         <th>Email</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!--Baris diisi dinamis oleh assets/js/anggota.js via fetch('../data/anggota.json')-->
+                    <!--Baris diisi dinamis oleh assets/js/penjual.js via fetch('../data/penjual.json')-->
                 </tbody>
             </table>
             </div>
@@ -50,9 +50,9 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 SIMPUS-Mini &mdash; Jobsheet 6</p>
+        <p>&copy; 2026 Fatar's Garage &mdash; Jual Beli Motor Bekas</p>
     </footer>
     <script src="../assets/js/app.js"></script>
-    <script src="../assets/js/anggota.js"></script>
+    <script src="../assets/js/penjual.js"></script>
 </body>
 </html>
