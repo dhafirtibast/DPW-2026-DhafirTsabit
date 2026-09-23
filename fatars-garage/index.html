@@ -3,56 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SIMPUS-Mini | Beranda</title>
+    <title>Fatar's Garage | Beranda</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <header>
-        <h1>SIMPUS-Mini</h1>   
+        <h1>Fatar's Garage</h1>   
         <button type="button" id="nav-toggle-btn" class="nav-toggle-label" aria-label="Menu">&#9776;</button>
         <nav>
             <ul>
                 <li><a href="index.html">Beranda</a></li>
-                <li><a href="buku/list.html">Daftar Buku</a></li>
-                <li><a href="buku/tambah.html">Tambah Buku</a></li>
-                <li><a href="anggota/list.html">Daftar Anggota</a></li>
-                <li><a href="anggota/tambah.html">Tambah Anggota</a></li>
+                <li><a href="motor/list.html">Daftar Motor</a></li>
+                <li><a href="motor/tambah.html">Pasang Iklan</a></li>
+                <li><a href="penjual/list.html">Daftar Penjual</a></li>
+                <li><a href="penjual/tambah.html">Tambah Penjual</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section>
-            <h2>Selamat Datang di Sistem Perpustakaan Mini</h2>
-            <p>Aplikasi sederhana untuk mengelola data buku dan anggota perpustakaan.</p>
+        <section class="hero">
+            <h2>Jual Beli Motor Bekas</h2>
+            <p>Temukan motor bekas berkualitas dari penjual terpercaya di sekitarmu.</p>
+            <div class="search-box">
+                <label for="hero-search">Cari Motor</label>
+                <input type="text" id="hero-search" placeholder="Cari motor, merk, atau lokasi...">
+            </div>
+            <div class="chips">
+                <a href="motor/list.html" class="chip">Semua Motor</a>
+                <a href="motor/list.html" class="chip">Honda</a>
+                <a href="motor/list.html" class="chip">Yamaha</a>
+                <a href="motor/list.html" class="chip">Suzuki</a>
+                <a href="motor/list.html" class="chip">Kawasaki</a>
+            </div>
         </section>
 
         <section>
             <h2>Ringkasan</h2>
             <div>
             <article>
-                <h3>Total Buku</h3>
-                <p>12</p>
+                <h3>Total Iklan</h3>
+                <p>10</p>
             </article>
             <article>
-                <h3>Total Anggota</h3>
-                <p>8</p>
+                <h3>Total Penjual</h3>
+                <p>4</p>
             </article>
             <article>
-                <h3>Sedang Dipinjam</h3>
-                <p>3</p>
-            </article>
-            <article>
-                <h3>Buku Terlambat</h3>
+                <h3>Tersedia</h3>
                 <p>6</p>
             </article>
+            <article>
+                <h3>Terjual</h3>
+                <p>2</p>
+            </article>
+            </div>
+        </section>
+
+        <section>
+            <h2>Iklan Terbaru</h2>
+            <div class="card-grid">
+                <a href="motor/list.html" class="card">
+                    <div class="thumb">Foto Motor</div>
+                    <div class="body">
+                        <h3>Honda PCX 160</h3>
+                        <p class="meta">Malang &middot; 2023</p>
+                        <p class="harga">Rp 33.000.000</p>
+                    </div>
+                </a>
+                <a href="motor/list.html" class="card">
+                    <div class="thumb">Foto Motor</div>
+                    <div class="body">
+                        <h3>Yamaha NMAX 155</h3>
+                        <p class="meta">Surabaya &middot; 2021</p>
+                        <p class="harga">Rp 27.500.000</p>
+                    </div>
+                </a>
+                <a href="motor/list.html" class="card">
+                    <div class="thumb">Foto Motor</div>
+                    <div class="body">
+                        <h3>Kawasaki Ninja 250</h3>
+                        <p class="meta">Malang &middot; 2020</p>
+                        <p class="harga">Rp 43.000.000</p>
+                    </div>
+                </a>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 SIMPUS-Mini &mdash; Jobsheet 1
-        </p>
+        <p>&copy; 2026 Fatar's Garage &mdash; Jual Beli Motor Bekas</p>
     </footer>
     <script src="assets/js/app.js"></script>
 </body>
