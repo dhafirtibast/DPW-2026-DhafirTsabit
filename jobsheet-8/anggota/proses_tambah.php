@@ -1,5 +1,6 @@
 <?php
 session_start();
+require __DIR__ . '/../includes/koneksi.php';
 
 $nama = trim($_POST['nama'] ?? '');
 $noAnggota = trim($_POST['no_anggota'] ?? '');
@@ -20,16 +21,17 @@ if (!empty($errors)) {
     exit;
 }
 
-if (!isset($_SESSION['anggota'])) {
-    $_SESSION['anggota'] = [];
-}
-
-$_SESSION['anggota'][] = [
+$stmt = $pdo->prepare(
+    "INSERT INTO anggota (nama, no_anggota, alamat, no_hp)
+     VALUES (:nama, :no_anggota, :alamat, :no_hp)
+     RETURNING id"
+);
+$stmt->execute([
     'nama' => $nama,
     'no_anggota' => $noAnggota,
     'alamat' => $alamat,
     'no_hp' => $noHp,
-];
+]);
 
 $_SESSION['flash'] = ['type' => 'success', 'pesan' => 'Anggota berhasil ditambahkan.'];
 header('Location: list.php');
