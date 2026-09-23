@@ -63,7 +63,7 @@ function initValidasiForm() {
 
         const judul = form.querySelector("[name='judul'], [name='nama']");
         if (judul && judul.value.trim() === "") {
-            tampilkanError(judul, "Field ini waib diisi.");
+            tampilkanError(judul, "Field ini wajib diisi.");
             valid = false;
         } else if (judul) {
             hapusError(judul);
@@ -71,7 +71,7 @@ function initValidasiForm() {
 
         const pengarang = form.querySelector("[name='pengarang']");
         if (pengarang && pengarang.value.trim() === "") {
-            tampilkanError(pengarang, "Field ini waib diisi.");
+            tampilkanError(pengarang, "Pengarang wajib diisi.");
             valid = false;
         } else if (pengarang) {
             hapusError(pengarang);
