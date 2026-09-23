@@ -6,11 +6,11 @@ $pengarang = trim($_POST['pengarang'] ?? '');
 $tahun = ($_POST['tahun'] ?? '');
 $isbn = trim($_POST['isbn'] ?? '');
 $stok = ($_POST['stok'] ?? '');
-$kategori = trim($_POST['kategoori'] ?? '');
+$kategori = trim($_POST['kategori'] ?? '');
 
 $errors = [];
 if ($judul === '') {
-    $errors[] = "Judul wawjib diisi.";
+    $errors[] = "Judul wajib diisi.";
 }
 if ($pengarang === '') {
     $errors[] = "Pengarang wajib diisi.";
@@ -37,7 +37,7 @@ $_SESSION['buku'][] = [
     'pengarang' => $pengarang,
     'tahun' => (int) $tahun,
     'isbn' => $isbn,
-    'stok' => (int) $judul,
+    'stok' => (int) $stok,
     'kategori' => $kategori,
 ];
 

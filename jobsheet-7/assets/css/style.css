@@ -72,7 +72,7 @@ section h2 {
 
 main section:nth-of-type(2) div{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
 }
 
@@ -242,7 +242,7 @@ footer {
 
 /* Tablet Vertikal */
 @media (max-width: 768px) {
-    main section:nth-of-type(2) {
+    main section:nth-of-type(2) div {
         grid-template-columns: repeat(2, 1fr);
     }
 }

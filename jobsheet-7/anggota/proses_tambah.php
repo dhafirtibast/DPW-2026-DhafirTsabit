@@ -8,7 +8,7 @@ $noHp = trim($_POST['no_hp'] ?? '');
 
 $errors = [];
 if ($nama === '') {
-    $errors[] = "Nama wawjib diisi.";
+    $errors[] = "Nama wajib diisi.";
 }
 if ($noAnggota === '') {
     $errors[] = "No. Anggota wajib diisi.";

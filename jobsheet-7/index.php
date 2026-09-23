@@ -27,4 +27,4 @@ $totalAnggota = count($_SESSION['anggota'] ?? []);
             </article>
             </div>
         </section>
-<?php include __DIR__ . 'includes/footer.php'; ?>
+<?php include __DIR__ . '/includes/footer.php'; ?>
