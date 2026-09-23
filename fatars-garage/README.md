@@ -4,25 +4,25 @@ Website sederhana jual beli motor bekas (terinspirasi OLX), dibangun dengan HTML
 
 ## Struktur Folder
 
-fatars-garage/
-├── motor/
-│   ├── list.html
-│   └── tambah.html
-├── penjual/
-│   ├── list.html
-│   └── tambah.html
-├── assets/
-│   ├── css/
-│   │   └── style.css
-│   └── js/
-│       ├── app.js
-│       ├── motor.js
-│       └── penjual.js
-├── data/
-│   ├── motor.json
-│   └── penjual.json
-├── index.html
-└── README.md
+fatars-garage/  
+├── motor/  
+│   ├── list.html  
+│   └── tambah.html  
+├── penjual/    
+│   ├── list.html  
+│   └── tambah.html  
+├── assets/  
+│   ├── css/  
+│   │   └── style.css  
+│   └── js/  
+│       ├── app.js  
+│       ├── motor.js  
+│       └── penjual.js  
+├── data/  
+│   ├── motor.json  
+│   └── penjual.json  
+├── index.html  
+└── README.md  
 
 ## Fitur
 
