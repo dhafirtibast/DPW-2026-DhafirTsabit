@@ -1,5 +1,5 @@
 // Mengambil & menampilkan daftar buku scr asinkron dari data/buku.json
-async function muatDaftarBuku() {
+async function muatDaftarMotor() {
     const tbody = document.querySelector(".table-responsive table tbody");
     const loading = document.getElementById("loading-indicator");
     if (!tbody) return;
@@ -10,20 +10,22 @@ async function muatDaftarBuku() {
     try {
         await new Promise((resolve) => setTimeout(resolve, 600));
 
-        const res = await fetch("../data/buku.json");
+        const res = await fetch("../data/motor.json");
         if (!res.ok) {
             throw new Error("Gagal mengambil data (status " + res.status + ")");
             
         }
-        const daftarBuku = await res.json();
+        const daftarMotor = await res.json();
 
-        daftarBuku.forEach(function (buku) {
+        daftarMotor.forEach(function (motor) {
             const tr = document.createElement("tr");
             tr.innerHTML =
-                "<td>" + buku.judul + "</td>" +
-                "<td>" + buku.pengarang + "</td>" +
-                "<td>" + buku.tahun + "</td>" +
-                "<td>" + buku.stok + "</td>" +
+                "<td>" + motor.nama + "</td>" +
+                "<td>" + motor.merk + "</td>" +
+                "<td>" + motor.tahun + "</td>" +
+                "<td class=\"harga\">" + motor.harga.toLocaleString("id-ID") + "</td>" +
+                "<td>" + motor.lokasi + "</td>" +
+                "<td>" + motor.status + "</td>" +
                 "<td>" +
                 "<button type=\"button\">Edit</button> " +
                 "<button type=\"button\" class=\"btn-hapus\">Hapus</button>" +
@@ -38,4 +40,4 @@ async function muatDaftarBuku() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", muatDaftarBuku);
+document.addEventListener("DOMContentLoaded", muatDaftarMotor);
