@@ -12,6 +12,7 @@
     --border: #3A3F44;
     --danger: #d9534f;
     --radius: 8px;
+    --form-width: 400px;
 }
 
 /* Reset & Base */
@@ -107,7 +108,7 @@ section h2 {
 .chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 1.5rem;
 }
 
 .chip:hover {
@@ -196,11 +197,12 @@ main section:nth-of-type(2) article p {
 table {
     width: 100%;
     border-collapse: collapse;
+    
 }
 
 th, td {
     text-align: left;
-    padding: 0.65rem, 0.75rem;
+    padding: 0.8rem 1rem;
     border-bottom: 1px solid var(--border);
 }
 
@@ -268,7 +270,7 @@ form label {
 
 form input, form select, form textarea {
     width: 100%;
-    max-width: 400px;
+    max-width: var(--form-width);
     padding: 0.55rem 0.7rem;
     border: 1px solid var(--border);
     border-radius: 4px;
@@ -319,6 +321,12 @@ footer {
     background: none;
     border: none;
     cursor: pointer;
+}
+
+section:has(#form-tambah) {
+    max-width: calc(var(--form-width) + 3rem);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Pesan Error Validasi */
