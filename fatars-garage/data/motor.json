@@ -1,12 +1,12 @@
 [
-    { "judul": "Laskar Pelangi", "pengarang": "Andrea Hirata", "tahun": 2005, "stok": 4 },
-    { "judul": "Bumi Manusia", "pengarang": "Pramoedya Ananta Toer", "tahun": 1980, "stok": 2 },
-    { "judul": "Negeri 5 Menara", "pengarang": "Ahmad Fuadi", "tahun": 2009, "stok": 0 },
-    { "judul": "Filosofi Teras", "pengarang": "Henry Manampiring", "tahun": 2018, "stok": 5 },
-    { "judul": "Ronggeng Dukuh Paruk", "pengarang": "Ahmad Tohari", "tahun": 1982, "stok": 1 },
-    { "judul": "Cantik Itu Luka", "pengarang": "Eka Kurniawan", "tahun": 2002, "stok": 3 },
-    { "judul": "Pulang", "pengarang": "Tere Liye", "tahun": 2015, "stok": 2 },
-    { "judul": "Sang Pemimpi", "pengarang": "Andrea Hirata", "tahun": 2006, "stok": 6 },
-    { "judul": "Perahu Kertas", "pengarang": "Dee Lestari", "tahun": 2009, "stok": 0 },
-    { "judul": "Gadis Kretek", "pengarang": "Ratih Kumala", "tahun": 2012, "stok": 4 }
+    {"nama": "Honda Vario 125", "merk": "Honda", "tahun": 2019, "harga": 15500000, "lokasi": "Malang", "status": "Tersedia"},
+    {"nama": "Yamaha NMAX 155", "merk": "Yamaha", "tahun": 2021, "harga": 27500000, "lokasi": "Surabaya", "status": "Tersedia"},
+    {"nama": "Honda Beat Street", "merk": "Honda", "tahun": 2018, "harga": 12000000, "lokasi": "Batu", "status": "Terjual"},
+    {"nama": "Kawasaki Ninja 250", "merk": "Kawasaki", "tahun": 2020, "harga": 43000000, "lokasi": "Malang", "status": "Booking"},
+    {"nama": "Yamaha Mio M3", "merk": "Yamaha", "tahun": 2017, "harga": 9500000, "lokasi": "Lawang", "status": "Tersedia"},
+    {"nama": "Honda Scoopy", "merk": "Honda", "tahun": 2022, "harga": 18500000, "lokasi": "Kediri", "status": "Tersedia"},
+    {"nama": "Suzuki Satria F150", "merk": "Suzuki", "tahun": 2019, "harga": 21000000, "lokasi": "Malang", "status": "Terjual"},
+    {"nama": "Honda CBR 150R", "merk": "Honda", "tahun": 2016, "harga": 24500000, "lokasi": "Blitar", "status": "Tersedia"},
+    {"nama": "Yamaha Aerox 155", "merk": "Yamaha", "tahun": 2020, "harga": 26000000, "lokasi": "Surabaya", "status": "Booking"},
+    {"nama": "Honda PCX 160", "merk": "Honda", "tahun": 2023, "harga": 33000000, "lokasi": "Malang", "status": "Tersedia"}
 ]

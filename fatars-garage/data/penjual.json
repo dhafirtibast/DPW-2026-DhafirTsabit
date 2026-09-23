@@ -1,6 +1,6 @@
 [
-    { "no_anggota": "A001", "nama": "Siti Aminah", "alamat": "Malang", "no_hp": "0812xxxx" },
-    { "no_anggota": "A002", "nama": "Budi Santoso", "alamat": "Batu", "no_hp": "0813xxxx" },
-    { "no_anggota": "A003", "nama": "Dewi Lestari", "alamat": "Malang", "no_hp": "0814xxxx" },
-    { "no_anggota": "A004", "nama": "Rizky Firmansyah", "alamat": "Lawang", "no_hp": "0815xxxx" }
+    {"id": "P001", "nama": "Bagas Motor", "kota": "Malang", "no_hp": "0812xxxx", "email": "bagas.motor@mail.com"},
+    {"id": "P002", "nama": "Andi Jaya", "kota": "Surabaya", "no_hp": "0813xxxx", "email": "andi.jaya@mail.com"},
+    {"id": "P003", "nama": "Rizky Otomotif", "kota": "Batu", "no_hp": "0814xxxx", "email": "rizky.oto@mail.com"},
+    {"id": "P004", "nama": "Dewi Collection", "kota": "Lawang", "no_hp": "0815xxxx", "email": "dewi.col@mail.com"}
 ]
