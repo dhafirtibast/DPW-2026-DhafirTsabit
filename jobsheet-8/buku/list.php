@@ -1,10 +1,12 @@
 <?php
 $page_title = "Daftar Buku";
 include __DIR__ . '/../includes/header.php';
+require __DIR__ . '/../includes/koneksi.php';
 
 $flash = $_SESSION['flash'] ?? null;
 unset($_SESSION['flash']);
-$daftarBuku = $_SESSION['buku'] ?? [];
+
+$daftarBuku = $pdo->query("SELECT * FROM buku ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 ?>
         <section>
             <h2>Daftar Buku</h2>
