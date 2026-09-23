@@ -17,7 +17,7 @@ $daftarAnggota = $_SESSION['anggota'] ?? [];
                 <label for="search-input">Cari Nama Anggota</label>
                 <input type="text" id="search-input" placeholder="Ketik nama anggota...">
             </div>
-            
+
             <div class="table-responsive">
             <table>
                 <thead>
@@ -26,7 +26,6 @@ $daftarAnggota = $_SESSION['anggota'] ?? [];
                         <th>Nama</th>
                         <th>Alamat</th>
                         <th>No. HP</th>
-                        <th>Email</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
