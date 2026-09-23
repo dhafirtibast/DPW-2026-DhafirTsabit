@@ -3,55 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SIMPUS-Mini | Tambah Buku</title>
+    <title>Fatar's Garage | Tambah Motor</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <header>
-        <h1>SIMPUS-Mini</h1>
+        <h1>Fatar's Garage</h1>
         <button type="button" id="nav-toggle-btn" class="nav-toggle-label" aria-label="Menu">&#9776;</button>
         <nav>
             <ul>
                 <li><a href="../index.html">Beranda</a></li>
-                <li><a href="list.html">Daftar Buku</a></li>
-                <li><a href="tambah.html">Tambah Buku</a></li>
-                <li><a href="../anggota/list.html">Daftar Anggota</a></li>
-                <li><a href="../anggota/tambah.html">Tambah Anggota</a></li>
+                <li><a href="list.html">Daftar Motor</a></li>
+                <li><a href="tambah.html">Pasang Iklan</a></li>
+                <li><a href="../penjual/list.html">Daftar Penjual</a></li>
+                <li><a href="../penjual/tambah.html">Tambah Penjual</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
         <section>
-            <h2>Tambah Buku</h2>
+            <h2>Pasang Iklan Motor</h2>
             <form id="form-tambah">
                 <p>
-                    <label for="judul">Judul</label><br>
-                    <input type="text" id="judul" name="judul" required>
+                    <label for="nama">Nama Motor</label><br>
+                    <input type="text" id="nama" name="nama" required>
                 </p>
                 <p>
-                    <label for="pengarang">Pengarang</label><br>
-                    <input type="text" id="pengarang" name="pengarang" required>
+                    <label for="merk">Merk</label><br>
+                    <input type="text" id="merk" name="merk" required>
                 </p>
                 <p>
-                    <label for="tahun">Tahun Terbit</label><br>
+                    <label for="tahun">Tahun</label><br>
                     <input type="number" id="tahun" name="tahun" min="1900" max="2026" required>
                 </p>
                 <p>
-                    <label for="isbn">ISBN</label><br>
-                    <input type="text" id="isbn" name="isbn">
+                    <label for="harga">Harga (Rp)</label><br>
+                    <input type="number" id="harga" name="harga" min="0" required>
                 </p>
                 <p>
-                    <label for="stok">Stok</label><br>
-                    <input type="number" id="stok" name="stok" min="0" required>
+                    <label for="lokasi">Lokasi</label><br>
+                    <input type="text" id="lokasi" name="lokasi">
                 </p>
                 <p>
-                    <label for="kategori">Kategori</label><br>
-                    <select id="kategori" name="kategori">
-                        <option value="fiksi">Fiksi</option>
-                        <option value="non-fiksi">Non-Fiksi</option>
-                        <option value="referensi">Referensi</option>
+                    <label for="status">Status</label><br>
+                    <select id="status" name="status">
+                        <option value="Tersedia">Tersedia</option>
+                        <option value="Booking">Booking</option>
+                        <option value="Terjual">Terjual</option>
                     </select>
+                </p>
+                <p>
+                    <label for="deskripsi">Deskripsi</label><br>
+                    <textarea id="deskripsi" name="deskripsi" rows="4"></textarea>
                 </p>
                 <p>
                     <button type="submit">Simpan</button>
@@ -61,7 +65,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 SIMPUS-Mini &mdash; Jobsheet 1</p>
+        <p>&copy; 2026 Fatar's Garage &mdash; Jual Beli Motor Bekas</p>
     </footer>
     <script src="../assets/js/app.js"></script>
 </body>
