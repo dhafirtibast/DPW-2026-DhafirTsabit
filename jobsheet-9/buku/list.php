@@ -23,7 +23,7 @@ if ($keyword !== '') {
     $stmt = $pdo->prepare("SELECT * FROM buku ORDER BY id DESC LIMIT :limit OFFSET :offset");
 }
 $stmt->bindValue('limit', $perPage, PDO::PARAM_INT);
-$stmt->bindValue('offset', $perPage, PDO::PARAM_INT);
+$stmt->bindValue('offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
 
 $daftarBuku = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -71,7 +71,7 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
                             <td><?php echo $buku['stok']; ?></td>
                             <td>
                                 <a href="edit.php?id=<?php echo $buku['id']; ?>" class="btn-edit">Edit</a>
-                                <form class="form-hapus", method="post" action="hapus.php">
+                                <form class="form-hapus" method="post" action="hapus.php">
                                     <input type="hidden" name="id" value="<?php echo $buku['id']; ?>">
                                     <button type="submit" class="btn-hapus">Hapus</button>
                                 </form>
@@ -83,8 +83,8 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
             </table>
             </div>
 
-            <nav class="paginatin">
-                <?php for ($i=1; $i < $totalPages; $i++): ?>
+            <nav class="pagination">
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                 <a href="list.php?page=<?php echo $i; ?><?php echo $keyword !== '' ? '&q=' . urlencode($keyword) : ''; ?>"
                    class="<?php echo $i === $page ? 'active' : ''; ?>"><?php echo $i; ?></a>
                 <?php endfor; ?>

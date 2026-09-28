@@ -2,7 +2,7 @@
 session_start();
 require __DIR__ . '/../includes/koneksi.php';
 
-if ($_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: list.php');
     exit;
 }

@@ -17,7 +17,7 @@ function initHapusConfirm() {
         const row = form.closest("tr");
         const nama = row ? row.querySelector("td")?.textContent : "data ini";
         const yakin = confirm("Yakin ingin menghapus \"" + nama + "\"?");
-        if (yakin && row) {
+        if (!yakin) {
             e.preventDefault();
         }
     });
