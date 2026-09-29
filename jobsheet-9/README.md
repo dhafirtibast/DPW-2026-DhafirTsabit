@@ -1,24 +1,30 @@
-# Jobsheet 8 — Koneksi PostgreSQL
+# Jobsheet 9 — Edit, Hapus & Pencarian Data
 
-Sub-CPMK: Menghubungkan aplikasi dengan basis data PostgreSQL.
+Sub-CPMK: Melengkapi operasi CRUD (Edit/Hapus) serta menambahkan pencarian dan paginasi data pada aplikasi.
 
 ## Struktur Folder
 
 ```
-jobsheet-8/
+jobsheet-9/
 ├── anggota/
+│   ├── edit.php
+│   ├── hapus.php
 │   ├── list.php
-│   ├── tambah.php
-│   └── proses_tambah.php
+│   ├── proses_edit.php
+│   ├── proses_tambah.php
+│   └── tambah.php
 ├── assets/
 │   ├── css/
 │   │   └── style.css
 │   └── js/
 │       └── app.js
 ├── buku/
+│   ├── edit.php
+│   ├── hapus.php
 │   ├── list.php
-│   ├── tambah.php
-│   └── proses_tambah.php
+│   ├── proses_edit.php
+│   ├── proses_tambah.php
+│   └── tambah.php
 ├── docs/
 │   └── wireframe.md
 ├── includes/
@@ -31,13 +37,16 @@ jobsheet-8/
 └── index.php
 ```
 
-## Perubahan dari Jobsheet 7
+## Perubahan dari Jobsheet 8
 
-- Tambah `sql/01_buku_anggota.sql` — DDL tabel `buku` dan `anggota` (ERD dasar).
-- Tambah `includes/koneksi.php` — koneksi `PDO` driver `pgsql`.
-- `buku/proses_tambah.php` & `anggota/proses_tambah.php`: `$_SESSION['buku'][] = ...` (Jobsheet 7) diganti `INSERT ... RETURNING id` via prepared statement.
-- `buku/list.php` & `anggota/list.php`: sumber data diganti dari `$_SESSION` menjadi `SELECT * FROM ... ORDER BY id DESC`.
-- `index.php`: kartu statistik Total Buku/Anggota kini `SELECT COUNT(*)` dari database (bukan dummy/session lagi).
+- Tambah `buku/edit.php`, `buku/proses_edit.php`, `buku/hapus.php` — dan pasangannya di `anggota/` — sehingga siklus CRUD kini lengkap (Create, Read, Update, Delete).
+- `edit.php`: ambil satu baris lewat `SELECT * FROM ... WHERE id = :id`, lalu isikan nilainya kembali ke form; `id` dikirim via `<input type="hidden">`.
+- `proses_edit.php`: validasi di sisi server (flash `error` bila gagal), lalu `UPDATE ... WHERE id = :id` via prepared statement, diakhiri redirect ke `list.php` dengan flash `success`.
+- `hapus.php`: hanya menerima `POST`, jalankan `DELETE FROM ... WHERE id = :id`, lalu redirect + flash. Penghapusan kini **benar-benar di server**, bukan lagi menghapus baris di sisi klien.
+- `buku/list.php` & `anggota/list.php`: tombol Edit/Hapus dummy diganti aksi nyata — link `<a href="edit.php?id=...">` dan form `method="post"` ke `hapus.php`.
+- `buku/list.php` & `anggota/list.php`: tambah **pencarian** (`?q=...` memakai `ILIKE`) dan **paginasi** (`LIMIT`/`OFFSET`, 5 baris per halaman) — keduanya lewat prepared statement.
+- `assets/js/app.js`: `initHapusConfirm()` berubah dari listener `click` + `row.remove()` menjadi konfirmasi pada event `submit` form `.form-hapus`; `preventDefault()` dipanggil hanya saat pengguna membatalkan.
+- `assets/css/style.css`: tambah style tautan `a.btn-edit`, `form.form-hapus` (inline), `.pagination`, dan tombol pada `.search-box`.
 
 ## Persiapan database
 
@@ -56,29 +65,31 @@ jobsheet-8/
 
 ## Cara menjalankan
 
-**Opsi 1 — PHP built-in server**, jalankan dari dalam folder `jobsheet-8/`:
+**Opsi 1 — PHP built-in server**, jalankan dari dalam folder `jobsheet-9/`:
 ```bash
 php -S localhost:8000
 ```
 Buka `http://localhost:8000/index.php`.
 
-**Opsi 2 — Laragon (Apache)**: lewat virtual host langsung ke folder `jobsheet-8/` (mis. `http://jobsheet08.test/`), atau bersarang di bawah domain proyek (mis. `http://dp2026.test/kode-praktikum/jobsheet-8/`) — path CSS/JS/link sudah relatif otomatis (lihat `includes/header.php`), jadi keduanya jalan.
+**Opsi 2 — Laragon (Apache)**: lewat virtual host langsung ke folder `jobsheet-9/` (mis. `http://jobsheet09.test/`), atau bersarang di bawah domain proyek (mis. `http://dp2026.test/kode-praktikum/jobsheet-9/`) — path CSS/JS/link sudah relatif otomatis (lihat `includes/header.php`), jadi keduanya jalan.
 
 ## Catatan
 
-- Data yang diinput sekarang **persisten** — coba tutup-buka browser, data tetap ada (beda dengan Jobsheet 7 yang hilang saat sesi berakhir).
-- Query memakai prepared statement (`:nama_parameter`) — bukan concatenation string — sebagai fondasi keamanan yang diperdalam di Jobsheet 11.
-- Kolom `id` sudah ikut ter-fetch dari `SELECT *` meski belum dipakai di tampilan — akan digunakan untuk link Edit/Hapus mulai Jobsheet 9.
+- Hapus kini **permanen di database** — konfirmasi JavaScript hanyalah "gerbang" sebelum form dikirim ke `hapus.php`; tidak ada lagi `row.remove()` di sisi klien.
+- Setiap operasi tulis memakai pola **PRG (Post/Redirect/Get)**: `proses_*.php` menyimpan lalu redirect ke `list.php`, sehingga me-refresh halaman tidak mengulang operasi.
+- Pencarian memakai `ILIKE` (pencocokan teks tanpa membedakan huruf besar/kecil — khas PostgreSQL) sehingga "buku" dan "Buku" sama-sama cocok.
+- `LIMIT`/`OFFSET` di-bind sebagai `PDO::PARAM_INT` karena PostgreSQL menolak parameter integer yang dikirim sebagai string.
+- `index.php` masih menampilkan `0` pada kartu "Sedang Dipinjam" — fitur Peminjaman/Pengembalian baru datang di jobsheet berikutnya.
 
 ## Refleksi
 
-Jobsheet ini menutup satu "lubang" yang sudah disinggung sejak Jobsheet 7: data yang **benar-benar tersimpan**. Aplikasi yang sebelumnya hanya "hidup" selama sesi browser kini punya memori yang menetap di PostgreSQL. Beberapa hal yang dipelajari:
+Jobsheet ini melengkapi satu siklus yang sudah dimulai sejak Jobsheet 7: setelah data bisa **disimpan** (Jobsheet 8), kini data juga bisa **diubah, dihapus, dicari, dan ditelusuri halaman per halaman**. Beberapa hal yang dipelajari:
 
-- **Database menyelesaikan masalah data yang hilang.** `$_SESSION` bersifat sementara (hilang saat sesi berakhir); PostgreSQL menyimpan data secara permanen, terpisah dari sesi browser mana pun.
-- **Skema SQL mendefinisikan aturan data.** `NOT NULL`, `UNIQUE`, `PRIMARY KEY`, dan tipe data yang tepat menjaga kualitas data langsung dari lapisan database — bukan hanya dari validasi aplikasi.
-- **PDO adalah jembatan seragam.** Satu objek `$pdo` (dibuat lewat DSN `pgsql:host=...;port=...;dbname=...`) cukup untuk menjalankan `SELECT`, `INSERT`, dst., dengan `try`/`catch` untuk menangani kegagalan koneksi secara rapi.
-- **Prepared statement = cara aman memasukkan data.** `prepare()` + `execute()` memisahkan struktur query dari nilai yang dikirim, sehingga nilai dari `$_POST` tidak pernah diperlakukan sebagai perintah SQL — fondasi pertahanan terhadap SQL injection.
-- **Struktur data yang konsisten membuat kode tampilan tidak berubah.** Karena `fetchAll(PDO::FETCH_ASSOC)` menghasilkan array yang bentuknya identik dengan `$_SESSION` sebelumnya, kode `foreach` di `list.php` sama sekali tidak perlu diubah — hanya sumber datanya yang berpindah.
-- **`query()` vs `prepare()`.** Query tanpa nilai dari luar cukup memakai `query()`; begitu ada nilai yang berasal dari pengguna, wajib memakai `prepare()`+`execute()`.
+- **CRUD lengkap menuntut identitas baris.** Edit dan Hapus perlu tahu *baris mana* yang dimaksud. `PRIMARY KEY id` yang sudah disiapkan di Jobsheet 8 (di-fetch lewat `SELECT *`) ternyata memang kunci yang membuat fitur ini mungkin — persiapan struktur di jobsheet sebelumnya baru terasa gunanya sekarang.
+- **Pola PRG mencegah aksi ganda.** Mengganti "tampilkan hasil simpan" menjadi "redirect ke daftar" membuat refresh tidak mengulang `INSERT`/`UPDATE`/`DELETE`, dan flash message memberi umpan balik sekali-tampil.
+- **Pencarian & paginasi adalah soal efisiensi.** Alih-alih menarik semua baris lalu memfilternya, `WHERE ... ILIKE` + `LIMIT`/`OFFSET` menyerahkan pekerjaan itu ke database — tetap ringan walau data terus bertambah.
+- **Validasi berlapis, server tetap penentu.** Atribut HTML `required` dan validasi JavaScript mempercepat umpan balik, tetapi validasi di `proses_*.php` tetap sumber kebenaran — klien bisa dilewati, server tidak.
+- **Keamanan yang sama berlaku pada UPDATE/DELETE.** Prepared statement tidak hanya untuk `INSERT`; setiap nilai dari pengguna (`id`, `q`, kolom form) tetap dikirim sebagai parameter, bukan disambung ke string SQL.
+- **Konfirmasi hapus yang benar bukan `row.remove()`.** JavaScript kini hanya mencegah form terkirim bila pengguna menekan "Batal"; penghapusan asli dilakukan server. Ini contoh pertama pemisahan tegas antara *tampilan* dan *sumber data*.
 
-Secara keseluruhan, jobsheet ini menunjukkan bagaimana data mengalir dari form → diproses server → **disimpan permanen di PostgreSQL** → dibaca kembali dan dirender menjadi tabel — fondasi yang tepat sebelum fitur Edit/Hapus dan Peminjaman/Pengembalian ditambahkan pada jobsheet berikutnya.
+Secara keseluruhan, jobsheet ini menjadikan aplikasi benar-benar dapat **dikelola**: data masuk, tampil, bisa diperbaiki, bisa dibuang, dan bisa ditemukan kembali. Ini fondasi yang tepat sebelum modul transaksi **Peminjaman/Pengembalian** ditambahkan pada jobsheet berikutnya.
