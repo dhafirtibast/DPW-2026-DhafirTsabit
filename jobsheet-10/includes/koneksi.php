@@ -1,37 +1,50 @@
 <?php
-// Kredensial dibaca dari environment variable agar aman saat deploy
-// (tidak ikut ter-commit). Fallback ke pengaturan lokal Laragon.
-$host    = getenv('DB_HOST');
-$port    = getenv('DB_PORT');
-$db      = getenv('DB_NAME');
-$user    = getenv('DB_USER');
-$pass    = getenv('DB_PASS');
-$sslmode = getenv('DB_SSLMODE');
-$envUrl  = getenv('DATABASE_URL');
+// Kredensial database dibaca berlapis supaya aman dan portabel:
+//   1. Environment variable (mis. platform cloud)
+//   2. includes/config.local.php (khusus server, TIDAK di-commit)
+//   3. DATABASE_URL (mis. Neon)
+//   4. Default lokal Laragon
+$config = [];
 
-if ($host === false || $host === '') {
-    if ($envUrl) {
-        $u    = parse_url($envUrl);
-        $host = $u['host'] ?? 'localhost';
-        $port = $u['port'] ?? 5432;
-        $db   = ltrim($u['path'] ?? '', '/');
-        $user = $u['user'] ?? '';
-        $pass = $u['pass'] ?? '';
-        if ($sslmode === false || $sslmode === '') {
-            $sslmode = 'require';
-        }
-    } else {
-        $host = 'localhost';
-        $port = '5433';
-        $db   = 'simpus_mini';
-        $user = 'postgres';
-        $pass = 'postgres';
-    }
+$envHost = getenv('DB_HOST');
+if ($envHost !== false && $envHost !== '') {
+    $config = [
+        'host'    => $envHost,
+        'port'    => getenv('DB_PORT') ?: '5432',
+        'dbname'  => getenv('DB_NAME') ?: '',
+        'user'    => getenv('DB_USER') ?: '',
+        'pass'    => getenv('DB_PASS') ?: '',
+        'sslmode' => getenv('DB_SSLMODE') ?: '',
+    ];
+} elseif (is_file(__DIR__ . '/config.local.php')) {
+    $config = require __DIR__ . '/config.local.php';
+} elseif (($envUrl = getenv('DATABASE_URL')) !== false && $envUrl !== '') {
+    $u = parse_url($envUrl);
+    $config = [
+        'host'    => $u['host'] ?? 'localhost',
+        'port'    => $u['port'] ?? '5432',
+        'dbname'  => ltrim($u['path'] ?? '', '/'),
+        'user'    => $u['user'] ?? '',
+        'pass'    => $u['pass'] ?? '',
+        'sslmode' => 'require',
+    ];
+} else {
+    $config = [
+        'host'    => 'localhost',
+        'port'    => '5433',
+        'dbname'  => 'simpus_mini',
+        'user'    => 'postgres',
+        'pass'    => 'postgres',
+        'sslmode' => '',
+    ];
 }
 
-if ($sslmode === false || $sslmode === '') {
-    $sslmode = 'prefer';
-}
+$host    = $config['host'] ?? 'localhost';
+$port    = $config['port'] ?? '5432';
+$db      = $config['dbname'] ?? '';
+$user    = $config['user'] ?? '';
+$pass    = $config['pass'] ?? '';
+$sslmode = ($config['sslmode'] ?? '') !== '' ? $config['sslmode'] : 'prefer';
 
 // Neon membutuhkan endpoint ID pada libpq lama (SNI). Aman ditambahkan
 // untuk libpq baru, jadi selalu disertakan bila host berupa domain Neon.
