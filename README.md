@@ -25,6 +25,8 @@ Repositori ini berisi pengerjaan dan dokumentasi Jobsheet **Desain dan Pemrogram
 | [Jobsheet 6](jobsheet-6/) | Fetch & JSON | Menerapkan pengambilan data asinkron pada aplikasi (proyek) | HTML5, CSS3, JavaScript, JSON |
 | [Jobsheet 7](jobsheet-7/) | PHP Dasar & Form Handling | Mengimplementasikan dasar PHP & pengolahan form | PHP, `$_SESSION` |
 | [Jobsheet 8](jobsheet-8/) | Koneksi PostgreSQL | Menghubungkan aplikasi dengan basis data PostgreSQL | PHP, PDO, PostgreSQL 15 |
+| [Jobsheet 9](jobsheet-9/) | Edit, Hapus, Pencarian & Paginasi | Melengkapi operasi CRUD (Edit/Hapus) serta pencarian & paginasi | PHP, PDO, PostgreSQL |
+| [Jobsheet 10](jobsheet-10/) | Autentikasi & Manajemen Sesi | Menerapkan autentikasi & manajemen sesi pengguna | PHP, `$_SESSION`, `password_hash()` |
 
 Proyek tambahan di luar jobsheet: [**Fatar's Garage**](fatars-garage/) — website jual beli motor bekas (lihat bagian [Proyek Eksplorasi](#proyek-eksplorasi)).
 
@@ -66,6 +68,31 @@ Sumber data berpindah dari `$_SESSION` ke database **PostgreSQL**:
 
 Data kini **persisten**: tetap ada setelah browser ditutup. Detail lengkap ada di [README Jobsheet 8](jobsheet-8/README.md).
 
+### Jobsheet 9 — Edit, Hapus, Pencarian & Paginasi
+Siklus **CRUD dilengkapi**: `edit.php` (ambil baris via `SELECT ... WHERE id = :id`) dan `proses_edit.php` (`UPDATE ... WHERE id = :id`), serta `hapus.php` yang hanya menerima `POST` (`DELETE ... WHERE id = :id`). Penghapusan kini **benar-benar di server** (bukan lagi `row.remove()` di klien). Ditambahkan pula **pencarian** (`?q=...` memakai `ILIKE`) dan **paginasi** (`LIMIT`/`OFFSET`, 5 baris/halaman) di `list.php`, semuanya lewat prepared statement. Setiap operasi tulis memakai pola **PRG (Post/Redirect/Get)**. Detail ada di [README Jobsheet 9](jobsheet-9/README.md).
+
+### Jobsheet 10 — Autentikasi & Manajemen Sesi
+Halaman Login yang dulu hanya berupa rancangan wireframe (Jobsheet 4) kini **berjalan sungguhan**:
+- `sql/02_users.sql` — tabel `users` (`nama`, `username` UNIQUE, `password`, `role`).
+- `auth/register.php` + `proses_register.php` — registrasi dengan `password_hash()` dan cek username duplikat.
+- `auth/login.php` + `proses_login.php` — verifikasi `password_verify()`, menyimpan `$_SESSION['user_id']`, `['nama']`, `['role']`.
+- `auth/logout.php` — mengakhiri sesi lewat `session_destroy()`.
+- `includes/auth.php` — *guard clause* yang mengalihkan Tamu ke halaman Login; dipasang di **baris paling atas** halaman terkunci (`buku/tambah|edit|hapus|proses_*`, seluruh `anggota/*`) agar `header('Location: ...')` masih bisa dipanggil sebelum ada output HTML.
+- `includes/header.php` — navbar **dinamis**: menu CRUD hanya tampil saat login, plus nama petugas + Logout di pojok kanan.
+- `index.php` (Beranda) dan `buku/list.php` (katalog) tetap **publik** sesuai pembagian aktor Tamu/Petugas.
+
+Perbedaan akses berdasarkan `role` baru **disiapkan kolomnya**, belum diterapkan.
+
+### Persiapan Deployment (Neon + Render)
+Sebelum dipublikasikan, aplikasi disiapkan agar dapat berjalan di server publik dengan database terkelola:
+- **Neon (PostgreSQL serverless)** — project `wild-scene-75011739` branch `production` di-`link` lewat CLI `neon` (folder `jobsheet-10/`). Skema `01_buku_anggota.sql` dan `02_users.sql` di-seed ke database `neondb`.
+- **Config-as-Code** — `neon.ts` (`defineConfig` dari `@neon/config/v1`) dikelola lewat `neon config init` / `neon deploy`, plus skill agent Neon (`neon skills`).
+- **Kredensial aman** — `includes/koneksi.php` diubah membaca *environment variable* (`DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASS`, `DB_SSLMODE`) dengan fallback ke `DATABASE_URL` lalu ke pengaturan Laragon lokal. `.env.local` dan `.neon` tidak di-commit (masuk `.gitignore`).
+- **Dockerfile** — image `php:8.1-apache` + ekstensi `pdo_pgsql`, Apache disetel mendengarkan `$PORT` (Render).
+- **render.yaml** — Blueprint Render: web service Docker `plan: free`, `rootDir: jobsheet-10`, env `DB_*`.
+
+Deploy publik ke Render menyusul (belum dijalankan).
+
 ---
 
 ## Proyek Eksplorasi
@@ -90,7 +117,10 @@ DPW-2026-DhafirTsabit/
 ├── jobsheet-6/                 # Fetch & JSON
 ├── jobsheet-7/                 # PHP dasar & form handling
 ├── jobsheet-8/                 # Koneksi PostgreSQL (PDO)
+├── jobsheet-9/                 # Edit, hapus, pencarian & paginasi
+├── jobsheet-10/                # Autentikasi & manajemen sesi (+ persiapan deploy)
 ├── fatars-garage/              # Proyek eksplorasi jual beli motor
+├── render.yaml                 # Blueprint deploy Render (jobsheet-10)
 └── README.md
 ```
 
@@ -107,12 +137,14 @@ Setiap folder jobsheet memiliki `README.md` masing-masing yang menjelaskan perub
 php -S localhost:8000
 ```
 
-**Jobsheet 7–8** (PHP): wajib diproses PHP interpreter, tidak dapat dibuka langsung sebagai `file://`:
+**Jobsheet 7–10** (PHP): wajib diproses PHP interpreter, tidak dapat dibuka langsung sebagai `file://`:
 ```bash
 php -S localhost:8000
 ```
 
-**Jobsheet 8** membutuhkan persiapan tambahan sebelum dijalankan (PostgreSQL berjalan, ekstensi `pdo_pgsql` aktif, database `simpus_mini` dan skema dibuat). Langkah lengkap ada di [README Jobsheet 8](jobsheet-8/README.md).
+**Jobsheet 8–10** membutuhkan persiapan tambahan sebelum dijalankan (PostgreSQL berjalan, ekstensi `pdo_pgsql` aktif, database `simpus_mini` dan skema dibuat). Langkah lengkap ada di [README Jobsheet 8](jobsheet-8/README.md). Jobsheet 10 menambah tabel `users` (`sql/02_users.sql`) untuk fitur autentikasi.
+
+Untuk **deployment**, `jobsheet-10/` menyiapkan `Dockerfile` (PHP + `pdo_pgsql`) dan `render.yaml`; kredensial database dibaca dari environment variable sehingga aman tidak ter-commit.
 
 ---
 
@@ -121,5 +153,7 @@ php -S localhost:8000
 - **Editor:** Visual Studio Code
 - **Web server lokal:** Laragon (Apache) / PHP built-in server
 - **PHP:** 8.1.10 (ekstensi `pdo_pgsql`, `pgsql`)
-- **Database:** PostgreSQL 15 (port `5433`)
+- **Database:** PostgreSQL 15 (port `5433`) — lokal
+- **Database (deploy):** Neon PostgreSQL (serverless)
+- **Deployment:** Docker (Render, `plan: free`)
 - **UI framework:** Bootstrap 5.3.3 (Jobsheet 3 varian Bootstrap)
