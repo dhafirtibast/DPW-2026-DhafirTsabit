@@ -83,16 +83,6 @@ Halaman Login yang dulu hanya berupa rancangan wireframe (Jobsheet 4) kini **ber
 
 Perbedaan akses berdasarkan `role` baru **disiapkan kolomnya**, belum diterapkan.
 
-### Persiapan Deployment (Neon + Render)
-Sebelum dipublikasikan, aplikasi disiapkan agar dapat berjalan di server publik dengan database terkelola:
-- **Neon (PostgreSQL serverless)** — project `wild-scene-75011739` branch `production` di-`link` lewat CLI `neon` (folder `jobsheet-10/`). Skema `01_buku_anggota.sql` dan `02_users.sql` di-seed ke database `neondb`.
-- **Config-as-Code** — `neon.ts` (`defineConfig` dari `@neon/config/v1`) dikelola lewat `neon config init` / `neon deploy`, plus skill agent Neon (`neon skills`).
-- **Kredensial aman** — `includes/koneksi.php` diubah membaca *environment variable* (`DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASS`, `DB_SSLMODE`) dengan fallback ke `DATABASE_URL` lalu ke pengaturan Laragon lokal. `.env.local` dan `.neon` tidak di-commit (masuk `.gitignore`).
-- **Dockerfile** — image `php:8.1-apache` + ekstensi `pdo_pgsql`, Apache disetel mendengarkan `$PORT` (Render).
-- **render.yaml** — Blueprint Render: web service Docker `plan: free`, `rootDir: jobsheet-10`, env `DB_*`.
-
-Deploy publik ke Render menyusul (belum dijalankan).
-
 ---
 
 ## Proyek Eksplorasi
@@ -118,9 +108,8 @@ DPW-2026-DhafirTsabit/
 ├── jobsheet-7/                 # PHP dasar & form handling
 ├── jobsheet-8/                 # Koneksi PostgreSQL (PDO)
 ├── jobsheet-9/                 # Edit, hapus, pencarian & paginasi
-├── jobsheet-10/                # Autentikasi & manajemen sesi (+ persiapan deploy)
+├── jobsheet-10/                # Autentikasi & manajemen sesi
 ├── fatars-garage/              # Proyek eksplorasi jual beli motor
-├── render.yaml                 # Blueprint deploy Render (jobsheet-10)
 └── README.md
 ```
 
@@ -144,8 +133,6 @@ php -S localhost:8000
 
 **Jobsheet 8–10** membutuhkan persiapan tambahan sebelum dijalankan (PostgreSQL berjalan, ekstensi `pdo_pgsql` aktif, database `simpus_mini` dan skema dibuat). Langkah lengkap ada di [README Jobsheet 8](jobsheet-8/README.md). Jobsheet 10 menambah tabel `users` (`sql/02_users.sql`) untuk fitur autentikasi.
 
-Untuk **deployment**, `jobsheet-10/` menyiapkan `Dockerfile` (PHP + `pdo_pgsql`) dan `render.yaml`; kredensial database dibaca dari environment variable sehingga aman tidak ter-commit.
-
 ---
 
 ## Lingkungan Pengembangan
@@ -153,7 +140,5 @@ Untuk **deployment**, `jobsheet-10/` menyiapkan `Dockerfile` (PHP + `pdo_pgsql`)
 - **Editor:** Visual Studio Code
 - **Web server lokal:** Laragon (Apache) / PHP built-in server
 - **PHP:** 8.1.10 (ekstensi `pdo_pgsql`, `pgsql`)
-- **Database:** PostgreSQL 15 (port `5433`) — lokal
-- **Database (deploy):** Neon PostgreSQL (serverless)
-- **Deployment:** Docker (Render, `plan: free`)
+- **Database:** PostgreSQL 15 (port `5433`)
 - **UI framework:** Bootstrap 5.3.3 (Jobsheet 3 varian Bootstrap)
