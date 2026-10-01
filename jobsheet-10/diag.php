@@ -2,16 +2,16 @@
 // DIAGNOSTIK SEMENTARA — akan dihapus setelah debugging.
 header('Content-Type: text/plain; charset=utf-8');
 
-$pass = getenv('DB_PASS');
-echo 'Railway DB_PASS length = ' . strlen((string)$pass) . PHP_EOL;
-
-$trouble = ['$', '\\', '{', '}', '#', '%', '@', ':', '/', '?', '&', '`', '"', "'"];
-foreach ($trouble as $ch) {
-    $c = substr_count((string)$pass, $ch);
-    if ($c > 0) {
-        echo "contains '$ch' x$c" . PHP_EOL;
-    }
+$pass = (string) getenv('DB_PASS');
+$du = (string) getenv('DATABASE_URL');
+$duPass = '';
+if ($du !== '') {
+    $u = parse_url($du);
+    $duPass = (string) ($u['pass'] ?? '');
 }
 
-echo 'has_non_alnum = ' . (preg_match('/[^A-Za-z0-9]/', (string)$pass) ? 'yes' : 'no') . PHP_EOL;
-echo 'len_before_trim = ' . strlen((string)$pass) . ', len_trimmed = ' . strlen(trim((string)$pass)) . PHP_EOL;
+echo 'DB_PASS length = ' . strlen($pass) . PHP_EOL;
+echo 'DATABASE_URL password length = ' . strlen($duPass) . PHP_EOL;
+echo 'DB_PASS == DATABASE_URL pass : ' . ($pass === $duPass ? 'YES (same)' : 'NO (different)') . PHP_EOL;
+echo 'DB_PASS non-alnum : ' . (preg_match('/[^A-Za-z0-9]/', $pass) ? 'yes' : 'no') . PHP_EOL;
+echo 'DATABASE_URL non-alnum : ' . (preg_match('/[^A-Za-z0-9]/', $duPass) ? 'yes' : 'no') . PHP_EOL;
