@@ -1,13 +1,24 @@
 <?php
 // Kredensial database dibaca berlapis supaya aman dan portabel:
-//   1. Environment variable (mis. platform cloud)
-//   2. includes/config.local.php (khusus server, TIDAK di-commit)
-//   3. DATABASE_URL (mis. Neon)
+//   1. DATABASE_URL (mis. Supabase/Railway/Neon — sumber paling otoritatif)
+//   2. Environment variable terpisah DB_HOST/DB_PORT/dst.
+//   3. includes/config.local.php (khusus server, TIDAK di-commit)
 //   4. Default lokal Laragon
 $config = [];
 
+$envUrl = getenv('DATABASE_URL');
 $envHost = getenv('DB_HOST');
-if ($envHost !== false && $envHost !== '') {
+if ($envUrl !== false && $envUrl !== '') {
+    $u = parse_url($envUrl);
+    $config = [
+        'host'    => $u['host'] ?? 'localhost',
+        'port'    => $u['port'] ?? '5432',
+        'dbname'  => ltrim($u['path'] ?? '', '/'),
+        'user'    => $u['user'] ?? '',
+        'pass'    => $u['pass'] ?? '',
+        'sslmode' => 'require',
+    ];
+} elseif ($envHost !== false && $envHost !== '') {
     $config = [
         'host'    => $envHost,
         'port'    => getenv('DB_PORT') ?: '5432',
@@ -18,16 +29,6 @@ if ($envHost !== false && $envHost !== '') {
     ];
 } elseif (is_file(__DIR__ . '/config.local.php')) {
     $config = require __DIR__ . '/config.local.php';
-} elseif (($envUrl = getenv('DATABASE_URL')) !== false && $envUrl !== '') {
-    $u = parse_url($envUrl);
-    $config = [
-        'host'    => $u['host'] ?? 'localhost',
-        'port'    => $u['port'] ?? '5432',
-        'dbname'  => ltrim($u['path'] ?? '', '/'),
-        'user'    => $u['user'] ?? '',
-        'pass'    => $u['pass'] ?? '',
-        'sslmode' => 'require',
-    ];
 } else {
     $config = [
         'host'    => 'localhost',
