@@ -5,6 +5,12 @@ RUN apt-get update \
     && docker-php-ext-install pdo_pgsql pgsql \
     && rm -rf /var/lib/apt/lists/*
 
+# Pastikan hanya satu MPM (prefork) termuat, mencegah error
+# "AH00534: apache2: Configuration error: More than one MPM loaded."
+RUN a2dismod mpm_event 2>/dev/null || true; \
+    a2dismod mpm_worker 2>/dev/null || true; \
+    a2enmod mpm_prefork
+
 COPY . /var/www/html/
 
 EXPOSE 10000
