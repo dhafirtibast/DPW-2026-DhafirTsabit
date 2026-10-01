@@ -3,4 +3,3 @@
 .env.local
 node_modules
 includes/config.local.php
-DEPLOYMENT.md
