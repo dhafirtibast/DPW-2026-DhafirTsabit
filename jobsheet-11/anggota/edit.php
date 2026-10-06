@@ -30,22 +30,22 @@ if (!$anggota) {
             <?php endif; ?>
 
             <form id="form-tambah" method="post" action="proses_edit.php">
-                <input type="hidden" name="id" value="<?php echo $anggota['id']; ?>">
+                <input type="hidden" name="id" value="<?php echo e($anggota['id']); ?>">
                 <p>
                     <label for="nama">Nama</label><br>
-                    <input type="text" id="nama" name="nama" value="<?php echo $anggota['nama']; ?>" required>
+                    <input type="text" id="nama" name="nama" value="<?php echo e($anggota['nama']); ?>" required>
                 </p>
                 <p>
                     <label for="no_anggota">No. Anggota</label><br>
-                    <input type="text" id="no_anggota" name="no_anggota" value="<?php echo $anggota['no_anggota']; ?>" required>
+                    <input type="text" id="no_anggota" name="no_anggota" value="<?php echo e($anggota['no_anggota']); ?>" required>
                 </p>
                 <p>
                     <label for="alamat">alamat</label><br>
-                    <input type="text" id="alamat" name="alamat" value="<?php echo $anggota['alamat']; ?>">
+                    <input type="text" id="alamat" name="alamat" value="<?php echo e($anggota['alamat']); ?>">
                 </p>
                 <p>
                     <label for="no_hp">No. HP</label><br>
-                    <input type="text" id="no_hp" name="no_hp" min="0" value="<?php echo $anggota['no_hp']; ?>">
+                    <input type="text" id="no_hp" name="no_hp" min="0" value="<?php echo e($anggota['no_hp']); ?>">
                 </p>
                 <p>
                     <button type="submit">Update</button>

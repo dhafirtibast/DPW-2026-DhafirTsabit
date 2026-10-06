@@ -33,11 +33,11 @@ if (!$buku) {
                 <input type="hidden" name="id" value="<?php echo $buku['id']; ?>">
                 <p>
                     <label for="judul">Judul</label><br>
-                    <input type="text" id="judul" name="judul" value="<?php echo $buku['judul']; ?>" required>
+                    <input type="text" id="judul" name="judul" value="<?php echo e($buku['judul']); ?>" required>
                 </p>
                 <p>
                     <label for="pengarang">Pengarang</label><br>
-                    <input type="text" id="pengarang" name="pengarang" value="<?php echo $buku['pengarang']; ?>" required>
+                    <input type="text" id="pengarang" name="pengarang" value="<?php echo e($buku['pengarang']); ?>" required>
                 </p>
                 <p>
                     <label for="tahun">Tahun Terbit</label><br>
@@ -45,7 +45,7 @@ if (!$buku) {
                 </p>
                 <p>
                     <label for="isbn">ISBN</label><br>
-                    <input type="text" id="isbn" name="isbn" value="<?php echo $buku['isbn']; ?>">
+                    <input type="text" id="isbn" name="isbn" value="<?php echo e($buku['isbn']); ?>">
                 </p>
                 <p>
                     <label for="stok">Stok</label><br>
