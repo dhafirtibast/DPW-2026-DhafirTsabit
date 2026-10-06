@@ -31,7 +31,7 @@ if (!$anggota) {
 
             <form id="form-tambah" method="post" action="proses_edit.php">
                 <?php echo csrf_field(); ?>
-                <input type="hidden" name="id" value="<?php echo e($anggota['id']); ?>">
+                <input type="hidden" name="id" value="<?php echo (int) $anggota['id']; ?>">
                 <p>
                     <label for="nama">Nama</label><br>
                     <input type="text" id="nama" name="nama" value="<?php echo e($anggota['nama']); ?>" required>

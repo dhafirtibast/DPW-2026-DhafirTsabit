@@ -31,7 +31,7 @@ if (!$buku) {
 
             <form id="form-tambah" method="post" action="proses_edit.php">
                 <?php echo csrf_field(); ?>
-                <input type="hidden" name="id" value="<?php echo $buku['id']; ?>">
+                <input type="hidden" name="id" value="<?php echo (int) $buku['id']; ?>">
                 <p>
                     <label for="judul">Judul</label><br>
                     <input type="text" id="judul" name="judul" value="<?php echo e($buku['judul']); ?>" required>
