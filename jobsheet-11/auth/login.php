@@ -21,6 +21,7 @@ unset($_SESSION['flash']);
             <?php endif; ?>
 
             <form method="post" action="proses_login.php">
+                <?php echo csrf_field(); ?>
                 <p>
                     <label for="username">Username</label><br>
                     <input type="text" id="username" name="username" required>

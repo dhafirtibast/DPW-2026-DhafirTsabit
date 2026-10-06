@@ -2,7 +2,10 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require __DIR__ . '/../includes/csrf.php';
 require __DIR__ . '/../includes/koneksi.php';
+
+csrf_verify();
 
 $username = trim($_POST['username'] ?? '');
 $password = $_POST['password'] ?? '';

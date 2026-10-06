@@ -30,6 +30,7 @@ if (!$anggota) {
             <?php endif; ?>
 
             <form id="form-tambah" method="post" action="proses_edit.php">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="id" value="<?php echo e($anggota['id']); ?>">
                 <p>
                     <label for="nama">Nama</label><br>
