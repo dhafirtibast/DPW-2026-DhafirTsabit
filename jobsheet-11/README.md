@@ -1,11 +1,11 @@
-# Jobsheet 10 — Autentikasi & Manajemen Sesi
+# Jobsheet 11 — Keamanan Web Dasar
 
-Sub-CPMK: Menerapkan autentikasi & manajemen sesi pengguna pada aplikasi.
+Sub-CPMK: Menerapkan prinsip keamanan web dasar.
 
 ## Struktur Folder
 
 ```
-jobsheet-10/
+jobsheet-11/
 ├── anggota/
 │   ├── edit.php
 │   ├── hapus.php
@@ -32,11 +32,14 @@ jobsheet-10/
 │   ├── proses_tambah.php
 │   └── tambah.php
 ├── docs/
+│   ├── security-checklist.md
 │   └── wireframe.md
 ├── includes/
 │   ├── auth.php
+│   ├── csrf.php
 │   ├── footer.php
 │   ├── header.php
+│   ├── helpers.php
 │   └── koneksi.php
 ├── sql/
 │   ├── 01_buku_anggota.sql
@@ -45,17 +48,18 @@ jobsheet-10/
 └── README.md
 ```
 
-## Perubahan dari Jobsheet 9
+## Perubahan dari Jobsheet 10
 
-- **Tabel `users`** (`sql/02_users.sql`) — menampung petugas: `id`, `nama`, `username` (UNIQUE), `password`, `role` (DEFAULT `'petugas'`).
-- **Registrasi** — `auth/register.php` (form) + `auth/proses_register.php`. Password disimpan sebagai **hash** lewat `password_hash($password, PASSWORD_DEFAULT)`; ada pengecekan **username duplikat** agar pesan error ramah dan tidak bergantung pada error `UNIQUE` mentah.
-- **Login** — `auth/login.php` (form) + `auth/proses_login.php`. Memverifikasi lewat `password_verify()`; bila cocok, menyimpan identitas ke session (`$_SESSION['user_id']`, `['nama']`, `['role']`). Pesan gagal sengaja **umum** ("Username atau password salah.") agar tidak membocorkan username mana yang valid.
-- **Logout** — `auth/logout.php` memanggil `session_destroy()` lalu mengalihkan ke `login.php`.
-- **Guard halaman** — `includes/auth.php`, *guard clause* yang mengalihkan pengunjung belum login ke `../auth/login.php` bila `$_SESSION['user_id']` belum ada. **Wajib di-`require` sebagai baris paling pertama** (sebelum `includes/header.php`) agar `header('Location: ...')` masih bisa dipanggil sebelum ada output HTML.
-  - Halaman **terkunci**: `buku/tambah|edit|hapus|proses_tambah|proses_edit.php` dan **seluruh** `anggota/*.php`.
-  - Halaman **tetap publik**: `index.php` (Beranda) dan `buku/list.php` (katalog buku) — sesuai pembagian aktor Tamu/Petugas yang dirancang sejak Jobsheet 4.
-- **`includes/header.php`** — `session_start()` dibungkus `if (session_status() === PHP_SESSION_NONE)` agar tidak bentrok dengan `auth.php`; navbar kini **dinamis** memakai `$sudahLogin`: menu Tambah Buku/Daftar Anggota/Tambah Anggota hanya tampil saat login, plus blok `.auth-status` (nama petugas + Logout, atau tautan Login).
-- **`assets/css/style.css`** — tambah style `.auth-status` (Flexbox) agar status akun sejajar rapi di header.
+Jobsheet ini adalah **audit keamanan menyeluruh** terhadap kode Jobsheet 7-10, mencakup 5 kerentanan. Hasilnya: 2 kerentanan ternyata sudah aman (dikonfirmasi), 3 benar-benar diperbaiki.
+
+- **File baru `includes/helpers.php`** — fungsi `e()` yang membungkus `htmlspecialchars((string) ($value ?? ''), ENT_QUOTES, 'UTF-8')` untuk mencegah XSS.
+- **File baru `includes/csrf.php`** — `csrf_token()` (token acak per-sesi via `random_bytes()`), `csrf_field()` (input tersembunyi), dan `csrf_verify()` (verifikasi dengan `hash_equals()`, HTTP 403 bila gagal). Kedua file ini di-`require_once` dari `includes/header.php` sehingga tersedia di semua halaman.
+- **XSS** — seluruh output data dari database/`$_GET` dibungkus `e()`: `judul`, `pengarang`, `nama`, `alamat`, `no_hp`, nilai pencarian (`q`), dan nama petugas di navbar (`$_SESSION['nama']`). Termasuk atribut `value="..."` pada form Edit yang rawan "memutus" atribut lewat tanda kutip.
+- **CSRF** — token tersembunyi (`csrf_field()`) ditambahkan ke **semua** form `POST`: Tambah/Edit/Hapus Buku & Anggota, Login, dan Register. Setiap `proses_*.php` dan `hapus.php` memanggil `csrf_verify()` **sebelum** menyentuh database.
+- **Session fixation** — `session_regenerate_id(true)` dipanggil di `auth/proses_login.php` tepat setelah `password_verify()` berhasil, sebelum mengisi `$_SESSION`.
+- **Validasi & sanitasi input** — diaudit ulang (sudah ada `is_numeric()` dan cek wajib-isi sejak Jobsheet 7-9); ditambah cast eksplisit `(int)` pada `id` di form Edit Buku & Anggota.
+- **SQL Injection** — diaudit ulang, **tidak ada perubahan kode**: sejak Jobsheet 8 semua query sudah memakai prepared statement (`:parameter`).
+- **`docs/security-checklist.md`** (baru) — laporan audit terstruktur dengan format Sebelum/Sesudah + bukti pengujian per kerentanan.
 
 ## Persiapan Database
 
@@ -72,33 +76,39 @@ jobsheet-10/
 
 ## Cara Menjalankan
 
-**Opsi 1 — PHP built-in server**, dari dalam folder `jobsheet-10/`:
+**Opsi 1 — PHP built-in server**, dari dalam folder `jobsheet-11/`:
 ```bash
 php -S localhost:8000
 ```
 Buka `http://localhost:8000/index.php`.
 
-**Opsi 2 — Laragon (Apache)**: lewat virtual host langsung ke folder `jobsheet-10/` (mis. `http://jobsheet10.test/`), atau bersarang di bawah domain proyek (mis. `http://dp2026.test/kode-praktikum/jobsheet-10/`) — path CSS/JS/link/redirect sudah relatif otomatis (lihat `includes/header.php` & `includes/auth.php`), jadi keduanya jalan.
+**Opsi 2 — Laragon (Apache)**: lewat virtual host langsung ke folder `jobsheet-11/` (mis. `http://jobsheet11.test/`), atau bersarang di bawah domain proyek (mis. `http://dp2026.test/kode-praktikum/jobsheet-11/`) — path CSS/JS/link/redirect sudah relatif otomatis (lihat `includes/header.php` & `includes/auth.php`), jadi keduanya jalan.
 
-**Uji cepat:** akses `buku/tambah.php` langsung tanpa login → harus dialihkan ke halaman Login. Setelah Register & Login, halaman yang sama berhasil dibuka; klik Logout → kembali ke kondisi semula.
+## Cara Menguji
+
+Sesuai `docs/security-checklist.md`, ada 4 skenario verifikasi:
+
+- **XSS**: tambah buku dengan judul `<script>alert(1)</script>` (atau `<iframe src="javascript:alert(1)">`) → di Daftar Buku harus **tampil sebagai teks**, bukan dieksekusi sebagai pop-up/iframe.
+- **CSRF**: login, lalu kirim `curl -X POST http://localhost:8000/buku/proses_tambah.php -d "judul=x"` tanpa `csrf_token` → harus mendapat **HTTP 403** ("Permintaan ditolak: token CSRF tidak valid atau kedaluwarsa.").
+- **Urutan guard**: akses `proses_tambah.php` lewat `POST` **tanpa login** sama sekali → tetap di-redirect ke Login (guard `auth.php` berjalan lebih dulu daripada `csrf_verify()`).
+- **SQL Injection**: login dengan username `' OR '1'='1` dan password apa saja → tetap muncul "Username atau password salah." (prepared statement bekerja).
 
 ## Catatan
 
-- **Password tidak pernah disimpan apa adanya** — hanya hash dari `password_hash()` yang masuk database; verifikasi memakai `password_verify()`.
-- **Menyembunyikan menu di navbar bukan keamanan.** Tautan yang tidak ditampilkan hanyalah kenyamanan tampilan; proteksi sesungguhnya adalah guard `includes/auth.php` yang tetap memblokir akses URL langsung.
-- **Urutan `require`/`include` kritis.** `auth.php` harus dipanggil sebelum ada output HTML, karena `header('Location: ...')` gagal bila headers sudah terkirim.
-- **Guard tidak bergantung database.** `auth.php` hanya memeriksa `$_SESSION`, sehingga tetap mengalihkan ke Login meski PostgreSQL sedang mati.
-- **Kontrol akses berbasis `role` belum diterapkan** — kolom `role` baru disiapkan (tugas mandiri).
-- **Session berbasis file** (default PHP) — identitas login disimpan di server selama sesi browser berlangsung.
+- **Jangan pernah percaya input dari luar.** XSS dan CSRF berakar dari prinsip yang sama: data dari `$_POST`/`$_GET` tidak boleh dipercaya begitu saja.
+- **`POST` saja tidak cukup mencegah CSRF.** Proteksi metode (`REQUEST_METHOD !== 'POST'`) tetap bisa dipicu form dari situs lain; token per-sesi yang diverifikasi `hash_equals()` adalah lapisan yang benar-benar menutup celah itu.
+- **Urutan `require` di halaman proses kritis**: `auth.php` → `csrf.php` → `csrf_verify()`. Pengunjung yang belum login di-redirect lebih dulu, sehingga tidak bisa memicu pengecekan CSRF sama sekali.
+- **`e()` wajib dipakai setiap kali mencetak data yang pernah melewati input pengguna**, termasuk di dalam atribut `value="..."`. Kolom bertipe `INTEGER` (`tahun`, `stok`) tidak perlu di-escape karena tidak mungkin memuat HTML.
+- **Audit bisa menghasilkan "sudah aman."** SQL Injection dan validasi input dikonfirmasi aman, bukan ditulis ulang dari nol.
+- Lihat `docs/security-checklist.md` untuk rincian audit dan pemetaan tiap kerentanan ke perbaikannya.
 
 ## Refleksi
 
-Jobsheet ini mewujudkan sesuatu yang sudah dirancang **jauh sebelumnya**: halaman Login dan pembagian aktor Tamu/Petugas yang sejak Jobsheet 4 masih berupa wireframe, kini benar-benar berjalan sebagai kode PHP. Beberapa hal yang dipelajari:
+Jobsheet ini menutup janji yang sudah disinggung berkali-kali di jobsheet sebelumnya — misalnya celah pada form pencarian `method="get"` yang disebut "akan dibahas di Jobsheet 11". Beberapa hal yang dipelajari:
 
-- **Autentikasi vs otorisasi adalah dua lapis berbeda.** Autentikasi menjawab "siapa kamu" (Login), otorisasi menjawab "boleh melakukan apa" (guard halaman). Keduanya baru bisa lengkap setelah `$_SESSION` dikuasai di Jobsheet 7.
-- **Hashing satu arah melindungi password.** `password_hash()` + `password_verify()` membuat password asli tidak pernah tersimpan, sehingga kebocoran database tidak langsung membahayakan akun.
-- **Session adalah jembatan antar-request.** Identitas pengguna disimpan sekali saat Login, lalu "diingat" di setiap halaman berikutnya tanpa login ulang.
-- **Keamanan nyata ada di server.** Menyembunyikan menu dan memvalidasi di klien tidak cukup; guard `auth.php` dan validasi server-side tetap penentu.
-- **Identitas sesi harus dipercaya dari server.** `$_SESSION` hanya boleh diisi setelah kredensial terverifikasi, sehingga pengguna tidak bisa "mengaku" sudah login dari sisi klien.
+- **Output encoding adalah pertahanan XSS yang paling mendasar.** Satu fungsi `e()` yang konsisten dipakai di semua titik output menutup celah stored XSS (contoh nyata: `<iframe src="javascript:...">` yang tersimpan sebagai judul buku).
+- **Token CSRF melindungi niat, bukan sekadar metode.** Metode `POST` memastikan aksi tidak terpicu tak sengaja; token memastikan aksi benar-benar berasal dari halaman aplikasi sendiri.
+- **Solusi keamanan terbaik seringkali kecil dan presisi.** Session fixation cukup ditutup satu baris `session_regenerate_id(true)` — asalkan ditempatkan di titik yang tepat (tepat setelah login berhasil).
+- **Audit sama pentingnya dengan menulis kode.** Memeriksa ulang kode lama memastikan klaim "sudah aman" berdiri di atas bukti, bukan asumsi.
 
-Setelah Jobsheet 10, SIMPUS-Mini tidak hanya dapat mengelola data, tetapi juga **mengontrol siapa yang boleh mengaksesnya** — fondasi yang tepat menuju modul transaksi **Peminjaman/Pengembalian**.
+Setelah Jobsheet 11, SIMPUS-Mini tidak hanya mengontrol **siapa** yang boleh mengakses data, tetapi juga memastikan data yang ditampilkan **aman** dan setiap aksi yang mengubah data **benar-benar diniatkan** oleh pengguna — fondasi keamanan yang tepat sebelum modul transaksi **Peminjaman/Pengembalian**.
