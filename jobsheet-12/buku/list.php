@@ -33,7 +33,7 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
             <h2>Daftar Buku</h2>
 
             <?php if ($flash): ?>
-                <p class="flash flash-<?php echo $flash['type']; ?>"><?php echo $flash['pesan']; ?></p>
+                <p class="flash flash-<?php echo $flash['type']; ?>"><?php echo e($flash['pesan']); ?></p>
             <?php endif; ?>
 
             <div class="search-box">
@@ -54,13 +54,13 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
                         <th>Pengarang</th>
                         <th>Tahun</th>
                         <th>Stok</th>
-                        <th>Aksi</th>
+                        <?php if ($sudahLogin): ?><th>Aksi</th><?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($daftarBuku)): ?>
                     <tr>
-                        <td colspan="5">Tidak ada data buku yang cocok.</td>
+                        <td colspan="<?php echo $sudahLogin ? 5 : 4; ?>">Tidak ada data buku yang cocok.</td>
                     </tr>
                     <?php else: ?>
                         <?php foreach ($daftarBuku as $buku): ?>
@@ -69,6 +69,7 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
                             <td><?php echo e($buku['pengarang']); ?></td>
                             <td><?php echo $buku['tahun']; ?></td>
                             <td><?php echo $buku['stok']; ?></td>
+                            <?php if ($sudahLogin): ?>
                             <td>
                                 <a href="edit.php?id=<?php echo $buku['id']; ?>" class="btn-edit">Edit</a>
                                 <form class="form-hapus" method="post" action="hapus.php">
@@ -77,6 +78,7 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
                                     <button type="submit" class="btn-hapus">Hapus</button>
                                 </form>
                             </td>
+                            <?php endif; ?>
                         </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

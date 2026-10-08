@@ -5,13 +5,13 @@ require __DIR__ . '/../includes/koneksi.php';
 
 csrf_verify();
 
-$id = $_POST['id'] ?? null;
+$id = (int) ($_POST['id'] ?? 0);
 $nama = trim($_POST['nama'] ?? '');
 $noAnggota = trim($_POST['no_anggota'] ?? '');
 $alamat = trim($_POST['alamat'] ?? '');
 $noHp = trim($_POST['no_hp'] ?? '');
 
-if (!$id) {
+if ($id <= 0) {
     header('Location: list.php');
     exit;
 }
@@ -25,6 +25,14 @@ if ($noAnggota === '') {
 }
 if (!empty($errors)) {
     $_SESSION['flash'] = ['type' => 'error', 'pesan' => implode(' ', $errors)];
+    header('Location: edit.php?id=' . urlencode($id));
+    exit;
+}
+
+$cek = $pdo->prepare("SELECT id FROM anggota WHERE no_anggota = :no_anggota AND id <> :id");
+$cek->execute(['no_anggota' => $noAnggota, 'id' => $id]);
+if ($cek->fetch()) {
+    $_SESSION['flash'] = ['type' => 'error', 'pesan' => 'No. Anggota sudah digunakan anggota lain.'];
     header('Location: edit.php?id=' . urlencode($id));
     exit;
 }

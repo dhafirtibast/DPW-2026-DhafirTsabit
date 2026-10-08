@@ -24,10 +24,17 @@ if (!empty($errors)) {
     exit;
 }
 
+$cek = $pdo->prepare("SELECT id FROM anggota WHERE no_anggota = :no_anggota");
+$cek->execute(['no_anggota' => $noAnggota]);
+if ($cek->fetch()) {
+    $_SESSION['flash'] = ['type' => 'error', 'pesan' => 'No. Anggota sudah digunakan.'];
+    header('Location: tambah.php');
+    exit;
+}
+
 $stmt = $pdo->prepare(
     "INSERT INTO anggota (nama, no_anggota, alamat, no_hp)
-     VALUES (:nama, :no_anggota, :alamat, :no_hp)
-     RETURNING id"
+     VALUES (:nama, :no_anggota, :alamat, :no_hp)"
 );
 $stmt->execute([
     'nama' => $nama,

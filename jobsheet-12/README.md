@@ -101,6 +101,7 @@ Sesuai `docs/security-checklist.md`, ada 4 skenario verifikasi:
 - **`e()` wajib dipakai setiap kali mencetak data yang pernah melewati input pengguna**, termasuk di dalam atribut `value="..."`. Kolom bertipe `INTEGER` (`tahun`, `stok`) tidak perlu di-escape karena tidak mungkin memuat HTML.
 - **Audit bisa menghasilkan "sudah aman."** SQL Injection dan validasi input dikonfirmasi aman, bukan ditulis ulang dari nol.
 - Lihat `docs/security-checklist.md` untuk rincian audit dan pemetaan tiap kerentanan ke perbaikannya.
+- Lihat `docs/penanganan-error.md` untuk daftar lengkap penanganan error (koneksi DB, CSRF, guard login, validasi, FK, transaksi stok) beserta perbaikan bug hasil audit ulang.
 
 ## Refleksi
 

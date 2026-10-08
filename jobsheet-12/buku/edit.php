@@ -7,8 +7,8 @@ require __DIR__ . '/../includes/koneksi.php';
 $flash = $_SESSION['flash'] ?? null;
 unset($_SESSION['flash']);
 
-$id = $_GET['id'] ?? null;
-if (!$id) {
+$id = (int) ($_GET['id'] ?? 0);
+if ($id <= 0) {
     header('Location: list.php');
     exit;
 }
@@ -26,7 +26,7 @@ if (!$buku) {
             <h2>Edit Buku</h2>
 
             <?php if ($flash): ?>
-                <p class="flash flash-<?php echo $flash['type']; ?>"><?php echo $flash['pesan']; ?></p>
+                <p class="flash flash-<?php echo $flash['type']; ?>"><?php echo e($flash['pesan']); ?></p>
             <?php endif; ?>
 
             <form id="form-tambah" method="post" action="proses_edit.php">

@@ -5,7 +5,7 @@ require __DIR__ . '/../includes/koneksi.php';
 
 csrf_verify();
 
-$id = $_POST['id'] ?? null;
+$id = (int) ($_POST['id'] ?? 0);
 $judul = trim($_POST['judul'] ?? '');
 $pengarang = trim($_POST['pengarang'] ?? '');
 $tahun = $_POST['tahun'] ?? '';
@@ -13,7 +13,7 @@ $isbn = trim($_POST['isbn'] ?? '');
 $stok = $_POST['stok'] ?? '';
 $kategori = trim($_POST['kategori'] ?? '');
 
-if (!$id) {
+if ($id <= 0) {
     header('Location: list.php');
     exit;
 }
@@ -30,6 +30,10 @@ if (!is_numeric($tahun) || $tahun < 1900 || $tahun > 2026) {
 }
 if (!is_numeric($stok) || $stok < 0) {
     $errors[] = "Stok tidak boleh negatif.";
+}
+
+if (!in_array($kategori, ['fiksi', 'non-fiksi', 'referensi'], true)) {
+    $errors[] = "Kategori tidak valid.";
 }
 
 if (!empty($errors)) {

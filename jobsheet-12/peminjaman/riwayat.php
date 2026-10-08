@@ -4,13 +4,13 @@ $page_title = "Riwayat Peminjaman";
 include __DIR__ . '/../includes/header.php';
 require __DIR__ . '/../includes/koneksi.php';
 
-$anggotaId = $_GET['anggota_id'] ?? '';
+$anggotaId = (int) ($_GET['anggota_id'] ?? 0);
 $daftarAnggota = $pdo->query("SELECT * FROM anggota ORDER BY nama")->fetchAll(PDO::FETCH_ASSOC);
 
 $riwayat = [];
 $anggotaTerpilih = null;
 
-if ($anggotaId !== '') {
+if ($anggotaId > 0) {
     $stmtA = $pdo->prepare("SELECT * FROM anggota WHERE id = :id");
     $stmtA->execute(['id' => $anggotaId]);
     $anggotaTerpilih = $stmtA->fetch(PDO::FETCH_ASSOC);

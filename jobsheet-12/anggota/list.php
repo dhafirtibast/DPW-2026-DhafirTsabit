@@ -34,7 +34,7 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
             <h2>Daftar Anggota</h2>
 
             <?php if ($flash): ?>
-                <p class="flash flash-<?php echo $flash['type']; ?>"><?php echo $flash['pesan']; ?></p>
+                <p class="flash flash-<?php echo $flash['type']; ?>"><?php echo e($flash['pesan']); ?></p>
             <?php endif; ?>
 
             <div class="search-box">
@@ -55,13 +55,13 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
                         <th>Nama</th>
                         <th>Alamat</th>
                         <th>No. HP</th>
-                        <th>Aksi</th>
+                        <?php if ($sudahLogin): ?><th>Aksi</th><?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($daftarAnggota)): ?>
                     <tr>
-                        <td colspan="5">Tidak ada data anggota yang cocok.</td>
+                        <td colspan="<?php echo $sudahLogin ? 5 : 4; ?>">Tidak ada data anggota yang cocok.</td>
                     </tr>
                     <?php else: ?>
                         <?php foreach ($daftarAnggota as $anggota): ?>
@@ -70,6 +70,7 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
                             <td><?php echo e($anggota['nama']); ?></td>
                             <td><?php echo e($anggota['alamat']); ?></td>
                             <td><?php echo e($anggota['no_hp']); ?></td>
+                            <?php if ($sudahLogin): ?>
                             <td>
                                 <a href="edit.php?id=<?php echo $anggota['id']; ?>" class="btn-edit">Edit</a>
                                 <form class="form-hapus" method="post" action="hapus.php">
@@ -78,6 +79,7 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
                                     <button type="submit" class="btn-hapus">Hapus</button>
                                 </form>
                             </td>
+                            <?php endif; ?>
                         </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

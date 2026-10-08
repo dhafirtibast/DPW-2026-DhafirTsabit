@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 csrf_verify();
 
-$id = $_POST['id'] ?? null;
+$id = (int) ($_POST['id'] ?? 0);
 if (!$id) {
     header('Location: kembali.php');
     exit;

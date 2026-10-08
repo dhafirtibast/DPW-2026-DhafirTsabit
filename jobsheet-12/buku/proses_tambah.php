@@ -26,6 +26,10 @@ if (!is_numeric($stok) || $stok < 0) {
     $errors[] = "Stok tidak boleh negatif.";
 }
 
+if (!in_array($kategori, ['fiksi', 'non-fiksi', 'referensi'], true)) {
+    $errors[] = "Kategori tidak valid.";
+}
+
 if (!empty($errors)) {
     $_SESSION['flash'] = ['type' => 'error', 'pesan' => implode(' ', $errors)];
     header('Location: tambah.php');
@@ -34,8 +38,7 @@ if (!empty($errors)) {
 
 $stmt = $pdo->prepare(
     "INSERT INTO buku (judul, pengarang, tahun, isbn, stok, kategori)
-     VALUES (:judul, :pengarang, :tahun, :isbn, :stok, :kategori)
-     RETURNING id"
+     VALUES (:judul, :pengarang, :tahun, :isbn, :stok, :kategori)"
 );
 $stmt->execute([
     'judul' => $judul,

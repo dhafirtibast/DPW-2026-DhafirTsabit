@@ -2,7 +2,7 @@
 require __DIR__ . '/../includes/auth.php';
 $page_title = "Pengembalian Buku";
 include __DIR__ . '/../includes/header.php';
-include __DIR__ . '/../includes/koneksi.php';
+require __DIR__ . '/../includes/koneksi.php';
 
 $flash = $_SESSION['flash'] ?? null;
 unset($_SESSION['flash']);
