@@ -1,4 +1,4 @@
-// Mengambil & menampilkan daftar buku scr asinkron dari data/buku.json
+// Mengambil & menampilkan daftar motor scr asinkron dari data/motor.json
 async function muatDaftarMotor() {
     const tbody = document.querySelector(".table-responsive table tbody");
     const loading = document.getElementById("loading-indicator");
@@ -34,7 +34,7 @@ async function muatDaftarMotor() {
         });
     } catch (err) {
         tbody.innerHTML =
-        "<tr><td colspan=\"5\">Gagal memuat data: " + err.message + "</td></tr>";
+        "<tr><td colspan=\"7\">Gagal memuat data: " + err.message + "</td></tr>";
     } finally {
         loading.style.display = "none";
     }
